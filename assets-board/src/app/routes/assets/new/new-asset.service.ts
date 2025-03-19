@@ -26,16 +26,3 @@ export class NewAssetService {
   }
 }
 
-/**
- * For real state 
- * - allow to have several assets with the same symbol
- * - allow to set the value and name of the asset
- 
-* For any other category, 
-* - only one asset per symbol is allowed
-*   - So, if the user try to add a second asset with the same symbol,
-*   - we should fill the form with the existing asset data
-*   - and a link to the edit page for that asset
-* - Values are not editable, and should come from the API
-* - Name is not editable and should come from the API
- */

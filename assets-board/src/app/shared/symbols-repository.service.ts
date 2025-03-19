@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, map, of, tap } from 'rxjs';
+import { Observable, forkJoin, map, of } from 'rxjs';
 import { CurrencyType } from '../domain/currency.type';
 import { Symbol } from '../domain/symbol.type';
 import { CommoditiesRepositoryService } from './commodities-repository.service';
@@ -72,7 +72,6 @@ export class SymbolsRepositoryService {
       this.getCashSymbols$(),
     ]).pipe(
       map((symbolArrays) => symbolArrays.flat()),
-      tap((symbols) => console.log(symbols))
     );
   }
 

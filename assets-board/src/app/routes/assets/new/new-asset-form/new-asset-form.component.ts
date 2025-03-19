@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Observable, map, of, switchMap, timer } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { Asset } from 'src/app/domain/asset.type';
 import { Category } from 'src/app/domain/category.type';
 import { Symbol } from 'src/app/domain/symbol.type';
@@ -62,7 +62,7 @@ export class NewAssetFormComponent implements OnInit {
         // For non-real estate, look up symbol info and populate fields
         const symbolObj = this.categorySymbols.find(s => s.name === symbol);
         if (symbolObj) {
-          this.form.get('name')?.setValue(symbol);
+          this.form.get('name')?.setValue(symbolObj.name);
           // Value would typically come from an API, using placeholder value for now
           this.form.get('value')?.setValue(1);
         }
@@ -74,19 +74,25 @@ export class NewAssetFormComponent implements OnInit {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const symbol = control.value;
       if (!symbol) {
+        console.log('symbol is empty, control will be valid');
+        control.setErrors(null);
+        control.markAsUntouched();
         return of(null);
       }
-      
-      // Add a small delay to avoid excessive API calls while typing
-      return timer(300).pipe(
-        switchMap(() => this.assetsStore.selectAssetBySymbol$(symbol)),
+      return this.assetsStore.selectAssetBySymbol$(symbol).pipe(
         map(asset => {
           if (asset && asset.id) {
             // Store the existing asset for template use
             this.existingAsset = asset;
+            console.log(`symbol ${symbol} exists, control will be invalid`);
+            control.setErrors({ symbolExists: true });
+            control.markAsTouched();
             return { symbolExists: true };
           }
           this.existingAsset = null;
+          console.log(`symbol ${symbol} does not exist, control will be valid`);
+          control.setErrors(null);
+          control.markAsDirty();
           return null;
         })
       );
@@ -94,14 +100,16 @@ export class NewAssetFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      const formValue = this.form.value;
+    console.log('onSubmit', this.form.value);
+       const formValue = this.form.value;
       const asset: Asset = {
-        ...formValue,
-        categoryId: Number(formValue.categoryId)
+      ...formValue,
+      categoryId: Number(formValue.categoryId),
+        name: this.form.get('name')?.value,
+        value: this.form.get('value')?.value,
       };
       this.save.emit(asset);
-    }
+      this.form.reset();
   }
 }
 
