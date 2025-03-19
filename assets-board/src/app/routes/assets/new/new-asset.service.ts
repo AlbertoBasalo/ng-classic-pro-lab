@@ -18,7 +18,7 @@ export class NewAssetService {
   }
 
   saveAsset(asset: Asset) {
-    this.assets.post$(asset).subscribe();
+    this.assets.post$(asset);
   }
 
   loadSymbols$() {

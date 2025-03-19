@@ -1,41 +1,42 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Asset } from 'src/app/domain/asset.type';
+import { Category } from 'src/app/domain/category.type';
+import { Symbol } from 'src/app/domain/symbol.type';
 import { AssetsRepositoryService } from 'src/app/shared/assets-repository.service';
+import { CategoriesRepositoryService } from 'src/app/shared/categories-repository.service';
+import { SymbolsRepositoryService } from 'src/app/shared/symbols-repository.service';
 @Injectable({
   providedIn: 'root'
 })
 export class EditAssetService {
   constructor(
     private router: Router,
-    private assetsRepository: AssetsRepositoryService  
+    private assetsRepository: AssetsRepositoryService  ,
+    private categoriesRepository: CategoriesRepositoryService,
+    private symbolsRepository: SymbolsRepositoryService,
+    
   ) { }
 
   loadAsset$(symbol: string): Observable<Asset> {
-    // TODO: Replace with actual API call to get asset by symbol
     return this.assetsRepository.getBySymbol$(symbol);
   }
 
-  loadCategories$(): Observable<string[]> {
-    // TODO: Replace with actual API call
-    return of(['stock', 'bond', 'crypto', 'commodity']);
+  loadCategories$(): Observable<Category[]> {
+    return this.categoriesRepository.getAll$();
   }
 
-  loadSymbols$(): Observable<string[]> {
-    // TODO: Replace with actual API call
-    return of(['AAPL', 'MSFT', 'GOOGL', 'AMZN']);
+  loadSymbols$(): Observable<Symbol[]> {
+    return this.symbolsRepository.getSymbols$();
   }
 
   updateAsset(asset: Asset): void {
-    // TODO: Replace with actual API call to update asset
-    console.log('Updating asset:', asset);
-    this.router.navigate(['/assets']);
+    this.assetsRepository.put$(asset);
   }
   
   deleteAsset(symbol: string): void {
-    // TODO: Replace with actual API call to delete asset
-    console.log('Deleting asset with symbol:', symbol);
-    this.router.navigate(['/assets']);
+    this.assetsRepository.delete$(symbol);
+    this.router.navigate(['/']);
   }
 } 

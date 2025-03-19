@@ -10,6 +10,57 @@ export class AssetsStoreService implements OnDestroy {
   private readonly STORAGE_KEY = 'assets-board-data';
   private subscription: Subscription;
 
+  private fakeData = [
+    {
+      id: 1,
+      name: 'Bitcoin',
+      categoryId: 1,
+      symbol: 'BTC',
+      quantity: 0.01,
+      value: 80000,
+    },
+    {
+      id: 2,
+      name: 'Flat NY',
+      categoryId: 2,
+      symbol: 'FLAT',
+      quantity: 1,
+      value: 1000000,
+    },
+    {
+      id: 3,
+      name: 'Ethereum',
+      categoryId: 1,
+      symbol: 'ETH',
+      quantity: 10,
+      value: 2020,
+    },
+    {
+      id: 4,
+      name: 'Gold',
+      categoryId: 3,
+      symbol: 'XAU',
+      quantity: 2,
+      value: 2900,
+    },
+    {
+      id: 5,
+      name: 'I.B.M.',
+      categoryId: 4,
+      symbol: 'IBM',
+      quantity: 1234,
+      value: 263,
+    },
+    {
+      id: 6,
+      name: 'Pound Sterling',
+      categoryId: 6,
+      symbol: 'GBP',
+      quantity: 3500,
+      value: 1.2,
+    },
+  ];
+
   constructor() {
     this.loadFromLocalStorage();
     this.subscription = this.assets.subscribe(assets => {
@@ -38,8 +89,11 @@ export class AssetsStoreService implements OnDestroy {
   private loadFromLocalStorage(): void {
     try {
       const storedAssets = localStorage.getItem(this.STORAGE_KEY);
-      if (storedAssets) {
+      if (storedAssets && storedAssets.length > 0) {
         this.assets.next(JSON.parse(storedAssets));
+      }
+      else {
+        this.assets.next(this.fakeData);
       }
     } catch (error) {
       console.error('Error loading assets from localStorage:', error);

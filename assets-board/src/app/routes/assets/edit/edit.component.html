@@ -1,9 +1,11 @@
-<h2>Edit Asset: {{ (asset$ | async)?.symbol }}</h2>
 
-<div *ngIf="asset$ | async as asset">
+<article *ngIf="asset$ | async as asset">
+  <header>
+    <h2>Edit Asset: {{ (asset$ | async)?.name }}</h2>
+  </header>
   <lab-edit-asset-form 
     [asset]="asset"
     (update)="updateAsset($event)"
     (delete)="deleteAsset()"
   ></lab-edit-asset-form>
-</div> 
+</article> 

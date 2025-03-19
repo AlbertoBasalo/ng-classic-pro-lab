@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 import { Asset } from 'src/app/domain/asset.type';
+import { AssetDetailsService } from 'src/app/shared/asset-details.service';
 
 @Component({
   selector: 'lab-edit-asset-form',
@@ -15,14 +17,25 @@ export class EditAssetFormComponent implements OnInit {
   protected form: FormGroup = this.fb.group({
     quantity: [0, [Validators.required, Validators.min(0)]],
   });
+  
+  protected assetDetails$: Observable<any> = of(null);
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private assetDetailsService: AssetDetailsService
+  ) {}
 
   ngOnInit() {
     if (this.asset) {
       this.form.patchValue({
         quantity: this.asset.quantity
       });
+      
+      // Load asset details
+      this.assetDetails$ = this.assetDetailsService.getAssetDetails$(
+        this.asset.categoryId,
+        this.asset.symbol
+      );
     }
   }
 

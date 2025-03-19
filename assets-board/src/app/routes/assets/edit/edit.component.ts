@@ -25,6 +25,7 @@ export class EditComponent implements OnInit {
   ngOnInit(): void {
     this.symbol = this.route.snapshot.paramMap.get('symbol') || '';
     this.asset$ = this.editAsset.loadAsset$(this.symbol);
+    // To Do get specific asset from the appropriate repository
   }
 
   updateAsset(asset: Asset): void {
