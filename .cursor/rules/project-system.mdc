@@ -6,3 +6,8 @@ alwaysApply: true
 
 This machine is a PC with Windows 11
 The terminal is a Powershell 7.5.0
+
+
+This is an Angular project with classic architecture and version 15.2.11
+
+Read https://v15.angular.io/docs for the Angular documentation
