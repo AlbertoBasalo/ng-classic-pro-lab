@@ -9,6 +9,19 @@ export class CurrenciesRepositoryService {
   private currencies: Currency[] = [
     // Major Fiat Currencies
     {
+      symbol: 'USD',
+      name: 'United States Dollar',
+      type: CurrencyType.FIAT,
+      category: CurrencyCategory.MAJOR,
+      price: 1.0000, // USD per USD
+      change: 0.0000,
+      changesPercentage: 0.00,
+      timestamp: Date.now(),
+      volume24h: 125000000000,
+      yearHigh: 1.1250,
+      yearLow: 1.0450,
+    },
+    {
       symbol: 'EUR',
       name: 'Euro',
       type: CurrencyType.FIAT,
@@ -26,7 +39,7 @@ export class CurrenciesRepositoryService {
       name: 'British Pound',
       type: CurrencyType.FIAT,
       category: CurrencyCategory.MAJOR,
-      price: 1.2450,
+      price: 1.2450, // USD per GBP
       change: 0.0035,
       changesPercentage: 0.28,
       timestamp: Date.now(),
@@ -53,11 +66,11 @@ export class CurrenciesRepositoryService {
       name: 'Bitcoin',
       type: CurrencyType.CRYPTO,
       category: CurrencyCategory.LAYER1,
-      price: 66750.25,
+      price: 66750.25, // USD per BTC
       change: 1250.75,
       changesPercentage: 1.91,
       timestamp: Date.now(),
-      marketCap: 1315000000000,
+      marketCap: 1315000000000, // USD
       volume24h: 38500000000,
       yearHigh: 69000.00,
       yearLow: 26350.00,
@@ -69,11 +82,11 @@ export class CurrenciesRepositoryService {
       name: 'Ethereum',
       type: CurrencyType.CRYPTO,
       category: CurrencyCategory.LAYER1,
-      price: 3275.50,
+      price: 3275.50, // USD per ETH
       change: 45.25,
       changesPercentage: 1.40,
       timestamp: Date.now(),
-      marketCap: 395000000000,
+      marketCap: 395000000000, // USD
       volume24h: 15750000000,
       yearHigh: 3850.00,
       yearLow: 1550.00,
