@@ -21,6 +21,7 @@ export class AssetsRepositoryService {
       id: 2,
       name: 'Flat NY',
       categoryId: 2,
+      symbol: 'FLAT',
       quantity: 1,
       value: 1000000,
     },

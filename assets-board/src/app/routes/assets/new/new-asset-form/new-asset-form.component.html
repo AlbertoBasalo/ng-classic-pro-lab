@@ -2,15 +2,6 @@
   <fieldset>
     <legend>New Asset</legend>
     <div>
-      <label for="name">Name</label>
-      <input
-        formControlName="name"
-        type="text"
-        id="name"
-        placeholder="Enter name"
-      />
-    </div>
-    <div>
       <label for="category">Category</label>
       <select id="category" formControlName="category">
         <option value="" disabled selected>Select a category</option>
@@ -18,6 +9,24 @@
           {{ category.name }}
         </option>
       </select>
+    </div>
+    <div>
+      <label for="symbol">Symbol</label>
+      <select id="symbol" formControlName="symbol">
+        <option value="" disabled selected>Select a symbol</option>
+        <option *ngFor="let symbol of symbols" [value]="symbol.name">
+          {{ symbol.name }}
+        </option>
+      </select>
+    </div>
+    <div>
+      <label for="name">Name</label>
+      <input
+        formControlName="name"
+        type="text"
+        id="name"
+        placeholder="Enter name"
+      />
     </div>
     <div>
       <label for="quantity">Quantity</label>

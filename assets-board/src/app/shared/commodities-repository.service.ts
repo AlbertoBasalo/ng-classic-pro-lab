@@ -8,7 +8,7 @@ import { Commodity, CommodityCategory } from '../domain/commodity.type';
 export class CommoditiesRepositoryService {
   private commodities: Commodity[] = [
     {
-      symbol: 'GC',
+      symbol: 'XAU',
       name: 'Gold',
       category: CommodityCategory.PRECIOUS_METALS,
       unit: 'troy ounce',
@@ -21,7 +21,7 @@ export class CommoditiesRepositoryService {
       volume: 234567,
     },
     {
-      symbol: 'SI',
+      symbol: 'XAG',
       name: 'Silver',
       category: CommodityCategory.PRECIOUS_METALS,
       unit: 'troy ounce',
