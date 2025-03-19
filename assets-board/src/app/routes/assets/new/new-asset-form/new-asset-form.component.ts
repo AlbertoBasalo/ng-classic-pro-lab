@@ -17,7 +17,7 @@ export class NewAssetFormComponent implements OnInit {
   protected categorySymbols: Symbol[] = [];
 
   protected form: FormGroup = this.fb.group({
-    category: ['', [Validators.required]],
+    categoryId: [0, [Validators.required]],
     symbol: ['', [Validators.required]],
     name: ['', [Validators.required]],
     quantity: [1, [Validators.required, Validators.min(0)]],
@@ -27,16 +27,20 @@ export class NewAssetFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.form.get('category')?.valueChanges.subscribe((category) => {
-      console.log('category selected', category);
-      this.categorySymbols = [...this.symbols.filter((symbol) => symbol.categoryId == category)];
-      console.log('category symbols', this.categorySymbols);
+    this.form.get('categoryId')?.valueChanges.subscribe((categoryId) => {
+      const numericCategoryId = Number(categoryId);
+      this.categorySymbols = [...this.symbols.filter((symbol) => symbol.categoryId === numericCategoryId)];
     });
   }
 
   onSubmit() {
     if (this.form.valid) {
-      this.save.emit(this.form.value);
+      const formValue = this.form.value;
+      const asset: Asset = {
+        ...formValue,
+        categoryId: Number(formValue.categoryId)
+      };
+      this.save.emit(asset);
     }
   }
 }

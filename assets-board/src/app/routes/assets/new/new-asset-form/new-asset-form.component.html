@@ -2,10 +2,10 @@
   <fieldset>
     <legend>New Asset</legend>
     <div>
-      <label for="category">Category</label>
-      <select id="category" formControlName="category">
+      <label for="categoryId">Category</label>
+      <select id="categoryId" formControlName="categoryId">
         <option value="" disabled selected>Select a category</option>
-        <option *ngFor="let category of categories" [value]="category.id">
+        <option *ngFor="let category of categories" [ngValue]="category.id">
           {{ category.name }}
         </option>
       </select>

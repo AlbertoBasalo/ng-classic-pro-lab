@@ -201,6 +201,15 @@ export class StocksRepositoryService {
       marketCap: 2690000000000,
       timestamp: Date.now(),
     },
+    IBM: {
+      symbol: 'IBM',
+      name: 'International Business Machines Corporation',
+      price: 172.45,
+      changesPercentage: 0.85,
+      change: 1.45,
+      marketCap: 2690000000000,
+      timestamp: Date.now(),
+    },  
   };
 
   public getCompanies$(): Observable<Company[]> {
