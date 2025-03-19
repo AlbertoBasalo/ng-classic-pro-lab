@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Asset, NULL_ASSET } from 'src/app/domain/asset.type';
 import { EditAssetService } from './edit-asset.service';
 
+
 @Component({
   selector: 'lab-edit',
   templateUrl: './edit.component.html',

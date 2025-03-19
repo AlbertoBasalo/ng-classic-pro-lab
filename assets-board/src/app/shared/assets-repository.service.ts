@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { catchError, delay, forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
-import { Asset, NULL_ASSET } from '../domain/asset.type';
+import { Asset } from '../domain/asset.type';
 import { AssetValueService } from './asset-value.service';
 import { AssetsStoreService } from './assets-store.service';
 
@@ -100,8 +100,13 @@ export class AssetsRepositoryService {
   }
 
   public getById$(id: number): Observable<Asset> {
-    const asset = this.fakeData.find((asset) => asset.id === id);
-    return of(asset || NULL_ASSET);
+    const asset$ = this.assetsStore.selectAssetById$(id);
+    return asset$;
+  }
+
+  public getBySymbol$(symbol: string): Observable<Asset> {
+    const asset$ = this.assetsStore.selectAssetBySymbol$(symbol);
+    return asset$;
   }
 
   public post$(asset: Asset): Observable<Asset> {

@@ -2,23 +2,19 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Asset } from 'src/app/domain/asset.type';
-
+import { AssetsRepositoryService } from 'src/app/shared/assets-repository.service';
 @Injectable({
   providedIn: 'root'
 })
 export class EditAssetService {
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private assetsRepository: AssetsRepositoryService  
+  ) { }
 
   loadAsset$(symbol: string): Observable<Asset> {
     // TODO: Replace with actual API call to get asset by symbol
-    return of({
-      id: 1,
-      name: 'Sample Asset',
-      symbol: symbol,
-      categoryId: 1,
-      quantity: 10,
-      value: 1000
-    });
+    return this.assetsRepository.getBySymbol$(symbol);
   }
 
   loadCategories$(): Observable<string[]> {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { Asset } from '../domain/asset.type';
+import { Asset, NULL_ASSET } from '../domain/asset.type';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +10,18 @@ export class AssetsStoreService {
 
   public selectAssets$(): Observable<Asset[]> {
     return this.assets.asObservable();
+  }
+
+  public selectAssetBySymbol$(symbol: string): Observable<Asset> {
+    return this.assets.pipe(
+      map((assets) => assets.find((asset) => asset.symbol === symbol) || NULL_ASSET)
+    );
+  }
+
+  public selectAssetById$(id: number): Observable<Asset> {
+    return this.assets.pipe(
+      map((assets) => assets.find((asset) => asset.id === id) || NULL_ASSET)
+    );
   }
 
   public selectTotalAmount$(): Observable<number> {
