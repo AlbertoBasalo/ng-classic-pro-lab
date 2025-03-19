@@ -8,9 +8,9 @@ const routes: Routes = [
       import('./routes/home/home.module').then((m) => m.HomeModule),
   },
   {
-    path: 'assets/new',
+    path: 'assets',
     loadChildren: () =>
-      import('./routes/assets/new/new.module').then((m) => m.NewModule),
+      import('./routes/assets/assets.module').then((m) => m.AssetsModule),
   },
 ];
 
