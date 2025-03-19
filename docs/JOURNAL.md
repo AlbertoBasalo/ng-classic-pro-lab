@@ -15,3 +15,7 @@
 - Removed imperative saveToLocalStorage calls from dispatch methods
 - Modified saveToLocalStorage method to accept assets parameter
 - Committed changes with conventional commit message: "refactor(assets): implement reactive localStorage persistence" 
+## 2025-03-19
+- Added async validator for symbol field in new asset form
+- Added conditional behavior based on asset category (real estate vs others)
+- Added error message with edit link when symbol already exists
