@@ -73,23 +73,30 @@ export class AssetsRepositoryService {
         }
         
         // Create an Observable for each asset to get its updated value
-        const assetObservables = assets.map(asset => 
-          this.assetValueService.getCurrentValue$(asset.categoryId, asset.symbol).pipe(
-            // Combine the current value with the asset
-            map(currentValue => ({
-              ...asset,
-              value: currentValue
-            })),
-            // If there's an error getting the value, keep the original
-            catchError(() => of(asset))
-          )
-        );
+        const assetUpdatedObservables = assets.map(asset => this.getUpdatedAssetValue$(asset));
         
         // Combine all asset Observables
-        return forkJoin(assetObservables);
+        return forkJoin(assetUpdatedObservables);
       }),
       delay(500), // Simulate network delay
       tap(updatedAssets => this.assetsStore.dispatchSetAssets(updatedAssets))
+    );
+  }
+
+  /**
+   * Get an updated asset with current market value
+   * @param asset The asset to update
+   * @returns Observable with the updated asset
+   */
+  private getUpdatedAssetValue$(asset: Asset): Observable<Asset> {
+    return this.assetValueService.getCurrentValue$(asset.categoryId, asset.symbol).pipe(
+      // Combine the current value with the asset
+      map(currentValue => ({
+        ...asset,
+        value: currentValue * (1 + Math.random() * 0.1)
+      })),
+      // If there's an error getting the value, keep the original
+      catchError(() => of(asset))
     );
   }
 
