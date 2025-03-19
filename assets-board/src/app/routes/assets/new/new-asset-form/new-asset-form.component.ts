@@ -1,18 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Asset } from 'src/app/domain/asset.type';
 import { Category } from 'src/app/domain/category.type';
-import { Symbol, SymbolCategory } from 'src/app/domain/symbol.type';
-import { SymbolsRepositoryService } from 'src/app/shared/symbols-repository.service';
+import { Symbol } from 'src/app/domain/symbol.type';
 
 @Component({
   selector: 'lab-new-asset-form',
   templateUrl: './new-asset-form.component.html',
   styleUrls: ['./new-asset-form.component.css'],
 })
-export class NewAssetFormComponent {
+export class NewAssetFormComponent implements OnInit {
   @Input() public categories: Category[] = [];
+  @Input() public symbols: Symbol[] = [];
   @Output() public save: EventEmitter<Asset> = new EventEmitter();
+
+  protected categorySymbols: Symbol[] = [];
 
   protected form: FormGroup = this.fb.group({
     category: ['', [Validators.required]],
@@ -22,30 +24,13 @@ export class NewAssetFormComponent {
     value: [1, [Validators.required, Validators.min(0)]],
   });
 
-  protected symbols: Symbol[] = [];
+  constructor(private fb: FormBuilder) {}
 
-  constructor(
-    private fb: FormBuilder,
-    private symbolsRepository: SymbolsRepositoryService
-  ) {
-    this.form.get('category')?.valueChanges.subscribe((categoryId) => {
-      if (categoryId) {
-        this.symbolsRepository
-          .getSymbolsByCategory$(categoryId as SymbolCategory)
-          .subscribe((symbols) => {
-            this.symbols = symbols;
-            this.form.patchValue({ symbol: '', name: '' });
-          });
-      }
-    });
-
-    this.form.get('symbol')?.valueChanges.subscribe((symbolName) => {
-      if (symbolName) {
-        const symbol = this.symbols.find((s) => s.name === symbolName);
-        if (symbol) {
-          this.form.patchValue({ name: symbol.name });
-        }
-      }
+  ngOnInit() {
+    this.form.get('category')?.valueChanges.subscribe((category) => {
+      console.log('category selected', category);
+      this.categorySymbols = [...this.symbols.filter((symbol) => symbol.categoryId == category)];
+      console.log('category symbols', this.categorySymbols);
     });
   }
 

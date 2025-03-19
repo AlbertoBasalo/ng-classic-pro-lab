@@ -14,7 +14,7 @@
       <label for="symbol">Symbol</label>
       <select id="symbol" formControlName="symbol">
         <option value="" disabled selected>Select a symbol</option>
-        <option *ngFor="let symbol of symbols" [value]="symbol.name">
+        <option *ngFor="let symbol of categorySymbols" [value]="symbol.name">
           {{ symbol.name }}
         </option>
       </select>
@@ -49,3 +49,4 @@
     <button type="submit" [disabled]="form.invalid">Submit</button>
   </fieldset>
 </form>
+

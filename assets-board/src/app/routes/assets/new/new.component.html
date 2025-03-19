@@ -1,6 +1,9 @@
 <ng-container *ngIf="categories$ | async as categories">
-  <lab-new-asset-form
-    [categories]="categories"
-    (save)="saveAsset($event)"
-  ></lab-new-asset-form>
+  <ng-container *ngIf="symbols$ | async as symbols">
+    <lab-new-asset-form
+      [categories]="categories"
+      [symbols]="symbols"
+      (save)="saveAsset($event)"
+    ></lab-new-asset-form>
+  </ng-container>
 </ng-container>

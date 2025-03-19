@@ -3,17 +3,6 @@
  */
 export type Symbol = {
   name: string;
-  category: SymbolCategory;
+  categoryId: number;
 };
 
-/**
- * Categories for symbols
- */
-export enum SymbolCategory {
-  CRYPTO = 1,
-  REAL_STATE = 2,
-  COMMODITIES = 3,
-  STOCKS = 4,
-  BONDS = 5,
-  CASH = 6,
-} 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, map } from 'rxjs';
+import { Observable, forkJoin, map, of, tap } from 'rxjs';
 import { CurrencyType } from '../domain/currency.type';
-import { Symbol, SymbolCategory } from '../domain/symbol.type';
+import { Symbol } from '../domain/symbol.type';
 import { CommoditiesRepositoryService } from './commodities-repository.service';
 import { CurrenciesRepositoryService } from './currencies-repository.service';
 import { StocksRepositoryService } from './stocks.repository.service';
@@ -21,9 +21,13 @@ export class SymbolsRepositoryService {
       map((currencies) =>
         currencies
           .filter((c) => c.type === CurrencyType.CRYPTO)
-          .map((c) => ({ name: c.symbol, category: SymbolCategory.CRYPTO }))
+          .map((c) => ({ name: c.symbol, categoryId: 1 }))
       )
     );
+  }
+
+  private getRealStateSymbols$(): Observable<Symbol[]> {
+    return of([{ name: 'FLAT', categoryId: 2 }, { name: 'HOUSE', categoryId: 2 }, { name: 'LAND', categoryId: 2 }]);
   }
 
   private getCommoditySymbols$(): Observable<Symbol[]> {
@@ -33,7 +37,7 @@ export class SymbolsRepositoryService {
         map((commodities) =>
           commodities.map((c) => ({
             name: c.symbol,
-            category: SymbolCategory.COMMODITIES,
+            categoryId: 3,
           }))
         )
       );
@@ -44,7 +48,7 @@ export class SymbolsRepositoryService {
       .getCompanies$()
       .pipe(
         map((companies) =>
-          companies.map((c) => ({ name: c.symbol, category: SymbolCategory.STOCKS }))
+          companies.map((c) => ({ name: c.symbol, categoryId: 4 }))
         )
       );
   }
@@ -54,7 +58,7 @@ export class SymbolsRepositoryService {
       map((currencies) =>
         currencies
           .filter((c) => c.type === CurrencyType.FIAT)
-          .map((c) => ({ name: c.symbol, category: SymbolCategory.CASH }))
+          .map((c) => ({ name: c.symbol, categoryId: 6 }))
       )
     );
   }
@@ -62,15 +66,19 @@ export class SymbolsRepositoryService {
   public getSymbols$(): Observable<Symbol[]> {
     return forkJoin([
       this.getCryptoSymbols$(),
+      this.getRealStateSymbols$(),
       this.getCommoditySymbols$(),
       this.getStockSymbols$(),
       this.getCashSymbols$(),
-    ]).pipe(map((symbolArrays) => symbolArrays.flat()));
+    ]).pipe(
+      map((symbolArrays) => symbolArrays.flat()),
+      tap((symbols) => console.log(symbols))
+    );
   }
 
-  public getSymbolsByCategory$(categoryId: SymbolCategory): Observable<Symbol[]> {
+  public getSymbolsByCategory$(categoryId: number): Observable<Symbol[]> {
     return this.getSymbols$().pipe(
-      map((symbols) => symbols.filter((s) => s.category === categoryId))
+      map((symbols) => symbols.filter((s) => s.categoryId === categoryId))
     );
   }
 } 
