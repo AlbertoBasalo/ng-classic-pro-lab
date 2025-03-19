@@ -1,25 +1,35 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
 import { Asset, NULL_ASSET } from '../domain/asset.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AssetsStoreService {
+export class AssetsStoreService implements OnDestroy {
   private assets = new BehaviorSubject<Asset[]>([]);
   private readonly STORAGE_KEY = 'assets-board-data';
+  private subscription: Subscription;
 
   constructor() {
     this.loadFromLocalStorage();
+    this.subscription = this.assets.subscribe(assets => {
+      this.saveToLocalStorage(assets);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   public selectAssets$(): Observable<Asset[]> {
     return this.assets.asObservable();
   }
 
-  private saveToLocalStorage(): void {
+  private saveToLocalStorage(assets: Asset[]): void {
     try {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.assets.value));
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(assets));
     } catch (error) {
       console.error('Error saving assets to localStorage:', error);
     }
@@ -58,14 +68,12 @@ export class AssetsStoreService {
 
   public dispatchSetAssets(assets: Asset[]): void {
     this.assets.next(assets);
-    this.saveToLocalStorage();
   }
 
   public dispatchAddAsset(asset: Asset): void {
     const assets = this.assets.value;
     const newAsset = { ...asset, id: assets.length + 1 };
     this.assets.next([...assets, newAsset]);
-    this.saveToLocalStorage();
   }
 
   public dispatchUpdateAsset(asset: Asset): void {
@@ -74,7 +82,6 @@ export class AssetsStoreService {
     if (index !== -1) {
       assets[index] = asset;
       this.assets.next([...assets]);
-      this.saveToLocalStorage();
     }
   }
 
@@ -84,7 +91,6 @@ export class AssetsStoreService {
     if (index !== -1) {
       assets.splice(index, 1);
       this.assets.next([...assets]);
-      this.saveToLocalStorage();
     }
   }
 }
