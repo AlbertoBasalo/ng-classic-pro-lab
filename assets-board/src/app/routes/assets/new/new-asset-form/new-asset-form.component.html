@@ -18,6 +18,10 @@
           {{ symbol.name }}
         </option>
       </select>
+      <div *ngIf="form.get('symbol')?.errors?.['symbolExists'] && form.get('symbol')?.touched" class="error-message">
+        This symbol is already in use. 
+        <a [routerLink]="['/assets', 'edit', existingAsset?.id]">Edit existing asset</a> instead.
+      </div>
     </div>
     <div>
       <label for="name">Name</label>
@@ -26,6 +30,7 @@
         type="text"
         id="name"
         placeholder="Enter name"
+        [readonly]="!isRealEstate"
       />
     </div>
     <div>
@@ -44,6 +49,7 @@
         formControlName="value"
         id="value"
         placeholder="Enter value"
+        [readonly]="!isRealEstate"
       />
     </div>
     <button type="submit" [disabled]="form.invalid">Submit</button>
