@@ -1,10 +1,10 @@
-# Aldaba Angular Classic Pro
+# Angular Classic Pro Lab
 
-[Repositorio](https://github.com/CursosAlbertoBasalo/ald-ng-classic-pro) de ejemplo para el curso de avanzado de Angular clásico para Aldaba
+[Repository](https://github.com/AlbertoBasalo/ng-classic-pro-lab) of example for the advanced classic Angular course.
 
 ## Assets Board
 
-Ejemplo en carpeta interna [assets-board](./assets-board) desarrollado con [Angular 15.2.11](https://www.npmjs.com/package/@angular/cli/v/15.2.11)
+Example in internal folder [assets-board](./assets-board) developed with [Angular 15.2.11](https://www.npmjs.com/package/@angular/cli/v/15.2.11)
 
 ---
 
