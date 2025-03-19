@@ -30,4 +30,10 @@ export class EditComponent implements OnInit {
   updateAsset(asset: Asset): void {
     this.editAsset.updateAsset(asset);
   }
+  
+  deleteAsset(): void {
+    if (this.symbol) {
+      this.editAsset.deleteAsset(this.symbol);
+    }
+  }
 } 

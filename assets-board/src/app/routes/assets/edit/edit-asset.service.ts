@@ -32,4 +32,10 @@ export class EditAssetService {
     console.log('Updating asset:', asset);
     this.router.navigate(['/assets']);
   }
+  
+  deleteAsset(symbol: string): void {
+    // TODO: Replace with actual API call to delete asset
+    console.log('Deleting asset with symbol:', symbol);
+    this.router.navigate(['/assets']);
+  }
 } 
