@@ -67,16 +67,15 @@ export class AssetsRepositoryService {
 
   public getAll$(): Observable<Asset[]> {
     return of(this.fakeData).pipe(
-      switchMap(assets => {
-        if (assets.length === 0) {
-          return of([]);
-        }
+      switchMap((assets: Asset[]) => {      
+        // Create an Observable updater for each asset to get its updated value
+        // ! Pay attention to the type of the assetUpdaters$ is an array of Observables
+        const assetUpdaters$: Observable<Asset>[] = assets.map(asset => this.getUpdatedAssetValue$(asset));
         
-        // Create an Observable for each asset to get its updated value
-        const assetUpdatedObservables = assets.map(asset => this.getUpdatedAssetValue$(asset));
-        
-        // Combine all asset Observables
-        return forkJoin(assetUpdatedObservables);
+        // Combine all asset updaters Observables
+        // ! Pay attention to the type of the updatedAssets is an Observable of an array of Assets
+        const updatedAssets$: Observable<Asset[]> = forkJoin(assetUpdaters$);
+        return updatedAssets$;
       }),
       delay(500), // Simulate network delay
       tap(updatedAssets => this.assetsStore.dispatchSetAssets(updatedAssets))

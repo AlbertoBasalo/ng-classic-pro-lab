@@ -1,4 +1,7 @@
 {
   "material-icon-theme.folders.theme": "specific",
-  "material-icon-theme.files.associations": {}
+  "material-icon-theme.activeIconPack": "angular",
+  "material-icon-theme.files.associations": {
+    "*.html": "angular"
+  }
 }
