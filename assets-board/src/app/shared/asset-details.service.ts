@@ -42,40 +42,43 @@ export class AssetDetailsService {
     // Mock data for real estate assets
     const realEstateData: Record<string, any> = {
       'FLAT': {
-        address: '123 Broadway, New York, NY',
         type: 'Apartment',
-        area: '1,200 sq ft',
-        rooms: 3,
-        bathrooms: 2,
-        yearBuilt: 2010,
-        lastAppraisal: 1000000,
-        lastAppraisalDate: '2023-01-15',
-        estimatedRent: 5000,
+        estimatedRent: 0.05,
         taxRate: 0.0125
       },
       'HOUSE': {
-        address: '456 Oak Street, Los Angeles, CA',
         type: 'Single Family Home',
-        area: '2,500 sq ft',
-        rooms: 4,
-        bathrooms: 3.5,
-        yearBuilt: 2005,
-        landArea: '0.25 acres',
-        lastAppraisal: 1750000,
-        lastAppraisalDate: '2023-02-20',
-        estimatedRent: 8500,
+        estimatedRent: 0.05,
         taxRate: 0.0110
       },
       'COMM': {
-        address: '789 Market Street, San Francisco, CA',
         type: 'Commercial',
-        area: '5,000 sq ft',
-        units: 3,
-        yearBuilt: 2000,
-        lastAppraisal: 3500000,
-        lastAppraisalDate: '2022-11-10',
-        annualIncome: 420000,
-        occupancyRate: 0.95,
+        estimatedRent: 0.05,
+        taxRate: 0.0135
+      },
+      'SHOP': {
+        type: 'Commercial',
+        estimatedRent: 0.05,
+        taxRate: 0.0135
+      },
+      'OFFICE': {
+        type: 'Commercial',
+        estimatedRent: 0.05,
+        taxRate: 0.0135
+      },
+      'INDUSTRY': {
+        type: 'Commercial',
+        estimatedRent: 0.05,
+        taxRate: 0.0135
+      },
+      'HOTEL': {
+        type: 'Commercial',
+        estimatedRent: 0.05,
+        taxRate: 0.0135
+      },
+      'LAND': {
+        type: 'Agricultural',
+        estimatedRent: 0.05,
         taxRate: 0.0135
       }
     };

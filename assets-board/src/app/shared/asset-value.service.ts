@@ -52,7 +52,13 @@ export class AssetValueService {
     const values: Record<string, number> = {
       'FLAT': 1000000,
       'HOUSE': 1500000,
-      'LAND': 750000
+      'LAND': 750000,
+      'COMM': 2000000,
+      'SHOP': 3000000,
+      'OFFICE': 4000000,
+      'INDUSTRY': 5000000,
+      'HOTEL': 6000000,
+      'OTHER': 7000000
     };
     return values[symbol] || 0;
   }
