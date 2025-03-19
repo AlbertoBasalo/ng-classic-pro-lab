@@ -7,9 +7,33 @@ import { Asset, NULL_ASSET } from '../domain/asset.type';
 })
 export class AssetsStoreService {
   private assets = new BehaviorSubject<Asset[]>([]);
+  private readonly STORAGE_KEY = 'assets-board-data';
+
+  constructor() {
+    this.loadFromLocalStorage();
+  }
 
   public selectAssets$(): Observable<Asset[]> {
     return this.assets.asObservable();
+  }
+
+  private saveToLocalStorage(): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.assets.value));
+    } catch (error) {
+      console.error('Error saving assets to localStorage:', error);
+    }
+  }
+
+  private loadFromLocalStorage(): void {
+    try {
+      const storedAssets = localStorage.getItem(this.STORAGE_KEY);
+      if (storedAssets) {
+        this.assets.next(JSON.parse(storedAssets));
+      }
+    } catch (error) {
+      console.error('Error loading assets from localStorage:', error);
+    }
   }
 
   public selectAssetBySymbol$(symbol: string): Observable<Asset> {
@@ -34,9 +58,33 @@ export class AssetsStoreService {
 
   public dispatchSetAssets(assets: Asset[]): void {
     this.assets.next(assets);
+    this.saveToLocalStorage();
   }
 
   public dispatchAddAsset(asset: Asset): void {
-    this.assets.next([...this.assets.value, asset]);
+    const assets = this.assets.value;
+    const newAsset = { ...asset, id: assets.length + 1 };
+    this.assets.next([...assets, newAsset]);
+    this.saveToLocalStorage();
+  }
+
+  public dispatchUpdateAsset(asset: Asset): void {
+    const assets = this.assets.value;
+    const index = assets.findIndex((a) => a.id === asset.id);
+    if (index !== -1) {
+      assets[index] = asset;
+      this.assets.next([...assets]);
+      this.saveToLocalStorage();
+    }
+  }
+
+  public dispatchDeleteAsset(symbol: string): void {
+    const assets = this.assets.value;
+    const index = assets.findIndex((a) => a.symbol === symbol);
+    if (index !== -1) {
+      assets.splice(index, 1);
+      this.assets.next([...assets]);
+      this.saveToLocalStorage();
+    }
   }
 }
