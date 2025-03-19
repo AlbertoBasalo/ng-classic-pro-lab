@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { delay, Observable, of, tap } from 'rxjs';
+import { catchError, delay, forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Asset, NULL_ASSET } from '../domain/asset.type';
+import { AssetValueService } from './asset-value.service';
 import { AssetsStoreService } from './assets-store.service';
 
 @Injectable({
@@ -59,12 +60,36 @@ export class AssetsRepositoryService {
     },
   ];
 
-  constructor(private assetsStore: AssetsStoreService) {}
+  constructor(
+    private assetsStore: AssetsStoreService,
+    private assetValueService: AssetValueService
+  ) {}
 
   public getAll$(): Observable<Asset[]> {
     return of(this.fakeData).pipe(
-      delay(500),
-      tap((assets) => this.assetsStore.dispatchSetAssets(assets))
+      switchMap(assets => {
+        if (assets.length === 0) {
+          return of([]);
+        }
+        
+        // Create an Observable for each asset to get its updated value
+        const assetObservables = assets.map(asset => 
+          this.assetValueService.getCurrentValue$(asset.categoryId, asset.symbol).pipe(
+            // Combine the current value with the asset
+            map(currentValue => ({
+              ...asset,
+              value: currentValue
+            })),
+            // If there's an error getting the value, keep the original
+            catchError(() => of(asset))
+          )
+        );
+        
+        // Combine all asset Observables
+        return forkJoin(assetObservables);
+      }),
+      delay(500), // Simulate network delay
+      tap(updatedAssets => this.assetsStore.dispatchSetAssets(updatedAssets))
     );
   }
 
