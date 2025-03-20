@@ -3,6 +3,12 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Asset, NULL_ASSET } from '../../domain/asset.type';
 import { AssetsRepositoryService } from '../assets-repository.service';
 
+// ToDo:
+// - Add categories repository service
+// - Add symbols repository service
+// - Unique source of truth for assets
+
+
 @Injectable({
   providedIn: 'root',
 })
