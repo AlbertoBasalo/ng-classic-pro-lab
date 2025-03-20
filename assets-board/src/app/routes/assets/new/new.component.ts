@@ -14,7 +14,6 @@ export class NewComponent {
   constructor(private newAsset: NewAssetService) {}
 
   saveAsset(asset: Asset) {
-    console.log('saveAsset', asset);
     this.newAsset.saveAsset(asset);
   }
 }

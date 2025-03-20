@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, map, of } from 'rxjs';
-import { Asset } from 'src/app/domain/asset.type';
+import { Asset, NULL_ASSET } from 'src/app/domain/asset.type';
 import { Category } from 'src/app/domain/category.type';
 import { Symbol } from 'src/app/domain/symbol.type';
-import { AssetsStoreService } from 'src/app/shared/assets-store.service';
+import { AssetsStoreService } from 'src/app/shared/store/assets-store.service';
 
 @Component({
   selector: 'lab-new-asset-form',
@@ -74,7 +74,6 @@ export class NewAssetFormComponent implements OnInit {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const symbol = control.value;
       if (!symbol) {
-        console.log('symbol is empty, control will be valid');
         control.setErrors(null);
         control.markAsUntouched();
         return of(null);
@@ -84,13 +83,11 @@ export class NewAssetFormComponent implements OnInit {
           if (asset && asset.id) {
             // Store the existing asset for template use
             this.existingAsset = asset;
-            console.log(`symbol ${symbol} exists, control will be invalid`);
             control.setErrors({ symbolExists: true });
             control.markAsTouched();
             return { symbolExists: true };
           }
           this.existingAsset = null;
-          console.log(`symbol ${symbol} does not exist, control will be valid`);
           control.setErrors(null);
           control.markAsDirty();
           return null;
@@ -100,16 +97,17 @@ export class NewAssetFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('onSubmit', this.form.value);
-       const formValue = this.form.value;
-      const asset: Asset = {
-      ...formValue,
-      categoryId: Number(formValue.categoryId),
-        name: this.form.get('name')?.value,
-        value: this.form.get('value')?.value,
-      };
-      this.save.emit(asset);
-      this.form.reset();
+    const formValue = this.form.value;
+    const asset: Asset = {
+      id:0,
+      name: this.form.get('name')?.value,
+      categoryId: formValue.categoryId,
+      symbol: formValue.symbol,
+      quantity: formValue.quantity,
+      value: this.form.get('value')?.value
+    };
+    this.save.emit(asset);
+    this.form.reset(NULL_ASSET);
   }
 }
 
