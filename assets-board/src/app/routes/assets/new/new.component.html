@@ -2,7 +2,7 @@
   <ng-container *ngIf="symbols$ | async as symbols">
     <lab-new-asset-form
       [categories]="categories"
-      [symbols]="symbols"
+      [categoriesSymbols]="symbols"
       (save)="saveAsset($event)"
     ></lab-new-asset-form>
   </ng-container>

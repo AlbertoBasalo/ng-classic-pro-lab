@@ -6,6 +6,10 @@ import { CategorySymbolVO } from 'src/app/domain/category-symbol-vo.type';
 import { Category } from 'src/app/domain/category.type';
 import { AssetsStoreService } from 'src/app/shared/assets/assets-store.service';
 
+
+/**
+ * Presentational component with a form to add a new asset
+ */
 @Component({
   selector: 'lab-new-asset-form',
   templateUrl: './new-asset-form.component.html',
@@ -13,19 +17,19 @@ import { AssetsStoreService } from 'src/app/shared/assets/assets-store.service';
 })
 export class NewAssetFormComponent implements OnInit {
   @Input() public categories: Category[] = [];
-  @Input() public symbols: CategorySymbolVO[] = [];
+  @Input() public categoriesSymbols: CategorySymbolVO[] = [];
   @Output() public save: EventEmitter<Asset> = new EventEmitter();
 
   protected categorySymbols: CategorySymbolVO[] = [];
-  protected existingAsset: Asset | null = null;
+  protected existingAssetForSymbol: Asset | null = null;
   protected isRealEstate = false;
 
   protected form: FormGroup = this.fb.group({
-    categoryId: [0, [Validators.required]],
+    categoryId: [0, [Validators.required, Validators.min(1)]],
     symbol: ['', {
       validators: [Validators.required],
       asyncValidators: [this.symbolValidator()],
-      updateOn: 'blur'
+      updateOn: 'change'
     }],
     name: ['', [Validators.required]],
     quantity: [1, [Validators.required, Validators.min(0)]],
@@ -38,89 +42,92 @@ export class NewAssetFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.form.get('categoryId')?.valueChanges.subscribe((categoryId) => {
-      const numericCategoryId = Number(categoryId);
-      this.categorySymbols = [...this.symbols.filter((symbol) => symbol.categoryId === numericCategoryId)];
-      this.isRealEstate = numericCategoryId === 2; // Flat/Real Estate category
+    this.getControl('categoryId').valueChanges
+      .subscribe((categoryId) => this.onCategoryChange(categoryId));
 
-      // Reset symbol when category changes
-      this.form.get('symbol')?.setValue('');
-      this.existingAsset = null;
-      
-      // Handle field behavior based on category
-      if (this.isRealEstate) {
-        this.form.get('name')?.enable();
-        this.form.get('value')?.enable();
-      } else {
-        this.form.get('name')?.disable();
-        this.form.get('value')?.disable();
-      }
-    });
-
-    this.form.get('symbol')?.valueChanges.subscribe(symbol => {
-      if (!this.isRealEstate && symbol) {
-        // For non-real estate, look up symbol info and populate fields
-        const symbolObj = this.categorySymbols.find(s => s.symbol === symbol);
-        if (symbolObj) {
-          this.form.get('name')?.setValue(symbolObj.symbol);
-          // Value would typically come from an API, using placeholder value for now
-          this.form.get('value')?.setValue(1);
-        }
-      }
-    });
+    this.getControl('symbol').valueChanges
+      .subscribe(symbol => this.onSymbolChange(symbol));
   }
 
-  symbolValidator(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const symbol = control.value;
-      if (!symbol) {
-        control.setErrors(null);
-        control.markAsUntouched();
-        return of(null);
+  private onCategoryChange(categoryId: number): void {
+    const numericCategoryId = Number(categoryId);
+    this.categorySymbols = this.categoriesSymbols.filter(
+      (symbol) => symbol.categoryId === numericCategoryId);
+    this.isRealEstate = numericCategoryId === 2; // Flat/Real Estate category
+
+    // Reset symbol when category changes
+    this.getControl('symbol').setValue('');
+    this.existingAssetForSymbol = null;
+    
+    // Handle field behavior based on category
+    if (this.isRealEstate) {
+      this.getControl('name').enable();
+      this.getControl('value').enable();
+    } else {
+      this.getControl('name').disable();
+      this.getControl('value').disable();
       }
-      return this.assetsStore.selectAssetBySymbol$(symbol).pipe(
+  }
+  
+
+  private onSymbolChange(symbol: string): void {
+    if (!symbol) return;
+    if (this.isRealEstate) return;
+    // For non-real estate, look up symbol info and populate fields
+    const symbolObj = this.categorySymbols.find(s => s.symbol === symbol);
+    if(!symbolObj) return;
+    this.getControl('name').setValue(symbolObj.symbol);
+    // Value would typically come from an API, using placeholder value for now
+    this.getControl('value').setValue(1);
+  }
+
+  private symbolValidator(): AsyncValidatorFn {
+    // return a function that will be called when the symbol field is changed
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      const result = of(null);
+      control.setErrors(null);
+      const selectedSymbol = control.value;
+      this.existingAssetForSymbol = null;
+      if (!selectedSymbol) return result;
+      return this.assetsStore.selectAssetBySymbol$(selectedSymbol).pipe(
         map(asset => {
-          if (asset && asset.id) {
-            // Store the existing asset for template use
-            this.existingAsset = asset;
-            control.setErrors({ symbolExists: true });
-            control.markAsTouched();
-            return { symbolExists: true };
-          }
-          this.existingAsset = null;
-          control.setErrors(null);
-          control.markAsDirty();
-          return null;
+          if(!asset || !asset.id) return null;
+          this.existingAssetForSymbol = asset;
+          control.setErrors({ symbolExists: true });
+          return { symbolExists: true };
         })
       );
     };
   }
 
-  onSubmit() {
+  protected onSubmit() {
     const formValue = this.form.value;
     const asset: Asset = {
       id:0,
-      name: this.form.get('name')?.value,
-      categoryId: formValue.categoryId,
-      symbol: formValue.symbol,
-      quantity: formValue.quantity,
-      value: this.form.get('value')?.value
+      name: this.getValue('name'),
+      categoryId: this.getValue('categoryId'),
+      symbol: this.getValue('symbol'),
+      quantity: this.getValue('quantity'),
+      value: this.getValue('value')
     };
     this.save.emit(asset);
     this.form.reset(NULL_ASSET);
   }
+
+  protected getControl(controlName: string): AbstractControl {
+    return this.form.get(controlName) as AbstractControl;
+  }
+
+  protected isInvalid(controlName: string): boolean {
+    return this.getControl(controlName).invalid;
+  }
+
+  protected getErrors(controlName: string): ValidationErrors | null {
+    return this.getControl(controlName).errors;
+  }
+
+  protected getValue(controlName: string): any {
+    return this.getControl(controlName).value;
+  }
 }
 
-/**
- * For any symbol, there should be only one asset
- * - So, we must have an async validator for the symbol field
- * - If the symbol is already in use, the form is marked as invalid
- * - and a link to the edit page is shown
- * 
- * For real state 
- * - allow to set the value and name of the asset
- 
-* For any other category, 
-* - Values and name are not editable, and should come from the API
-* 
-*/

@@ -3,12 +3,6 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Asset, NULL_ASSET } from '../../domain/asset.type';
 import { AssetsRepositoryService } from './assets-repository.service';
 
-// ToDo:
-// - Add categories repository service
-// - Add symbols repository service
-// - Unique source of truth for assets
-
-
 @Injectable({
   providedIn: 'root',
 })
@@ -18,13 +12,12 @@ export class AssetsStoreService {
   public assets$ = this.assets.asObservable();
 
   constructor(private assetsRepositoryService: AssetsRepositoryService) {
+    this.dispatchSetAssets();
   }
-
 
   public selectAssets$(): Observable<Asset[]> {
     return this.assets.asObservable();
   }
-
 
   public selectAssetBySymbol$(symbol: string): Observable<Asset> {
     return this.assets.pipe(
@@ -45,6 +38,8 @@ export class AssetsStoreService {
       )
     );
   }
+
+  // ToDo: manage subscriptions from the repository service
 
   public dispatchSetAssets(): void {
     this.assetsRepositoryService.getAll$().subscribe((assets) => {  

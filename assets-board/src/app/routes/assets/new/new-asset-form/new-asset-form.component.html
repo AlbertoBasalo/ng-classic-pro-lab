@@ -3,24 +3,27 @@
     <legend>New Asset</legend>
     <div>
       <label for="categoryId">Category</label>
-      <select id="categoryId" formControlName="categoryId" [attr.aria-invalid]="form.get('categoryId')?.invalid">
-        <option value="0" disabled selected>Select a category</option>
-        <option *ngFor="let category of categories" [ngValue]="category.id">
-          {{ category.name }}
-        </option>
+      <select 
+        id="categoryId" formControlName="categoryId" [attr.aria-invalid]="isInvalid('categoryId')">
+          <option value="0" disabled selected>Select a category</option>
+          <option *ngFor="let category of categories" [ngValue]="category.id">
+            {{ category.name }}
+          </option>
       </select>
     </div>
     <div>
       <label for="symbol">Symbol</label>
-      <select id="symbol" formControlName="symbol" [attr.aria-invalid]="form.get('symbol')?.invalid">
-        <option value="" disabled selected>Select a symbol</option>
-        <option *ngFor="let categorySymbol of categorySymbols" [value]="categorySymbol.symbol">
-          {{ categorySymbol.symbol }}
-        </option>
+      <select 
+        id="symbol" formControlName="symbol" [attr.aria-invalid]="isInvalid('symbol')">
+          <option value="" disabled selected>Select a symbol</option>
+          <option *ngFor="let categorySymbol of categorySymbols" [value]="categorySymbol.symbol">
+            {{ categorySymbol.symbol }}
+          </option>
       </select>
-      <div *ngIf="form.get('symbol')?.errors?.['symbolExists'] && form.get('symbol')?.touched" >
+      <div *ngIf="getErrors('symbol')?.['symbolExists']" >
         This symbol is already in use. 
-        <a [routerLink]="['/assets', 'edit', existingAsset?.symbol]">Edit existing asset</a> instead.
+        <a [routerLink]="['/assets', 'edit', existingAssetForSymbol?.symbol]">
+          You can edit the existing asset.</a> 
       </div>
     </div>
     <div>
@@ -31,7 +34,7 @@
         id="name"
         placeholder="Enter name"
         [readonly]="!isRealEstate"
-        [attr.aria-invalid]="form.get('name')?.invalid"
+        [attr.aria-invalid]="isInvalid('name')"
       />
     </div>
     <div>
@@ -41,7 +44,7 @@
         formControlName="quantity"
         id="quantity"
         placeholder="Enter quantity"
-        [attr.aria-invalid]="form.get('quantity')?.invalid"
+        [attr.aria-invalid]="isInvalid('quantity')"
       />
     </div>
     <div>
@@ -52,7 +55,7 @@
         id="value"
         placeholder="Enter value"
         [readonly]="!isRealEstate"
-        [attr.aria-invalid]="form.get('value')?.invalid"
+        [attr.aria-invalid]="isInvalid('value')"
       />
     </div>
     <button type="submit" [disabled]="form.invalid">Submit</button>
