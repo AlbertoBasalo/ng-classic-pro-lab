@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CommoditiesRepositoryService } from './commodities-repository.service';
-import { CurrenciesRepositoryService } from './currencies-repository.service';
-import { StocksRepositoryService } from './stocks.repository.service';
+import { CommoditiesRepositoryService } from '../commodities-repository.service';
+import { CurrenciesRepositoryService } from '../currencies-repository.service';
+import { StocksRepositoryService } from '../stocks.repository.service';
+
 
 @Injectable({
   providedIn: 'root',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AssetsStoreService } from 'src/app/shared/assets/assets-store.service';
 import { CategoriesRepositoryService } from 'src/app/shared/categories-repository.service';
-import { AssetsStoreService } from 'src/app/shared/store/assets-store.service';
 
 @Injectable({
   providedIn: 'root',

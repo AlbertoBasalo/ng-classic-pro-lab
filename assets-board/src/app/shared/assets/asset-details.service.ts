@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { CommoditiesRepositoryService } from './commodities-repository.service';
-import { CurrenciesRepositoryService } from './currencies-repository.service';
-import { StocksRepositoryService } from './stocks.repository.service';
+import { CommoditiesRepositoryService } from '../commodities-repository.service';
+import { CurrenciesRepositoryService } from '../currencies-repository.service';
+import { StocksRepositoryService } from '../stocks.repository.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,7 @@ export class AssetDetailsService {
    * @param symbol The symbol of the asset
    * @returns Observable with detailed asset information
    */
-  public getAssetDetails$(categoryId: number, symbol: string): Observable<any> {
+  public getAssetDetails$(categoryId: number, symbol: string): Observable<unknown> {
     switch (categoryId) {
       case 1: // Crypto
         return this.currenciesRepository.getBySymbol$(symbol);

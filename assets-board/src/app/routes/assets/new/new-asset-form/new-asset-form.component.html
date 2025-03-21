@@ -14,8 +14,8 @@
       <label for="symbol">Symbol</label>
       <select id="symbol" formControlName="symbol" [attr.aria-invalid]="form.get('symbol')?.invalid">
         <option value="" disabled selected>Select a symbol</option>
-        <option *ngFor="let symbol of categorySymbols" [value]="symbol.name">
-          {{ symbol.name }}
+        <option *ngFor="let categorySymbol of categorySymbols" [value]="categorySymbol.symbol">
+          {{ categorySymbol.symbol }}
         </option>
       </select>
       <div *ngIf="form.get('symbol')?.errors?.['symbolExists'] && form.get('symbol')?.touched" >

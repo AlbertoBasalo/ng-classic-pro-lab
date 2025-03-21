@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Asset } from 'src/app/domain/asset.type';
+import { CategorySymbolVO } from 'src/app/domain/category-symbol-vo.type';
 import { Category } from 'src/app/domain/category.type';
-import { Symbol } from 'src/app/domain/symbol.type';
+import { AssetsStoreService } from 'src/app/shared/assets/assets-store.service';
 import { CategoriesRepositoryService } from 'src/app/shared/categories-repository.service';
-import { AssetsStoreService } from 'src/app/shared/store/assets-store.service';
 import { SymbolsRepositoryService } from 'src/app/shared/symbols-repository.service';
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class EditAssetService {
     return this.categoriesRepository.getAll$();
   }
 
-  loadSymbols$(): Observable<Symbol[]> {
+  loadSymbols$(): Observable<CategorySymbolVO[]> {
     return this.symbolsRepository.getSymbols$();
   }
 

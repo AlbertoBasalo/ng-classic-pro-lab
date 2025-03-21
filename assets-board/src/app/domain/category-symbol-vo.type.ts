@@ -1,8 +1,8 @@
 /**
  * Symbol with its category for asset selection
  */
-export type Symbol = {
-  name: string;
+export type CategorySymbolVO = {
+  symbol: string;
   categoryId: number;
 };
 

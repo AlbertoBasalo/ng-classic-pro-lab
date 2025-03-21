@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Asset } from 'src/app/domain/asset.type';
+import { AssetsStoreService } from 'src/app/shared/assets/assets-store.service';
 import { CategoriesRepositoryService } from 'src/app/shared/categories-repository.service';
-import { AssetsStoreService } from 'src/app/shared/store/assets-store.service';
 import { SymbolsRepositoryService } from 'src/app/shared/symbols-repository.service';
 @Injectable({
   providedIn: 'root',

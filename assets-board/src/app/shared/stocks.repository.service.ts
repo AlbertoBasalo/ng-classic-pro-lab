@@ -212,10 +212,16 @@ export class StocksRepositoryService {
     },  
   };
 
+  /**
+   * Get all available companies
+   */
   public getCompanies$(): Observable<Company[]> {
     return of(this.companies);
   }
 
+  /**
+   * Get a specific quote by symbol with its value at a given timestamp
+   */
   public getQuote$(symbol: string): Observable<Quote | undefined> {
     return of(this.quotes[symbol]);
   }

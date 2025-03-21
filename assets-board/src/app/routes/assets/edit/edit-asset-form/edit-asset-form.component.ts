@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { Asset } from 'src/app/domain/asset.type';
-import { AssetDetailsService } from 'src/app/shared/asset-details.service';
+import { AssetDetailsService } from 'src/app/shared/assets/asset-details.service';
 
 @Component({
   selector: 'lab-edit-asset-form',

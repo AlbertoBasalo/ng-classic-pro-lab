@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { catchError, delay, forkJoin, map, Observable, of, switchMap, take } from 'rxjs';
-import { Asset, NULL_ASSET } from '../domain/asset.type';
+import { Asset, NULL_ASSET } from '../../domain/asset.type';
 import { AssetValueService } from './asset-value.service';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin, map, of } from 'rxjs';
+import { CategorySymbolVO } from '../domain/category-symbol-vo.type';
 import { CurrencyType } from '../domain/currency.type';
-import { Symbol } from '../domain/symbol.type';
 import { CommoditiesRepositoryService } from './commodities-repository.service';
 import { CurrenciesRepositoryService } from './currencies-repository.service';
 import { StocksRepositoryService } from './stocks.repository.service';
@@ -16,54 +16,54 @@ export class SymbolsRepositoryService {
     private stocksRepository: StocksRepositoryService
   ) {}
 
-  private getCryptoSymbols$(): Observable<Symbol[]> {
+  private getCryptoSymbols$(): Observable<CategorySymbolVO[]> {
     return this.currenciesRepository.getAll$().pipe(
       map((currencies) =>
         currencies
           .filter((c) => c.type === CurrencyType.CRYPTO)
-          .map((c) => ({ name: c.symbol, categoryId: 1 }))
+          .map((c) => ({ symbol: c.symbol, categoryId: 1 }))
       )
     );
   }
 
-  private getRealStateSymbols$(): Observable<Symbol[]> {
-    return of([{ name: 'FLAT', categoryId: 2 }, { name: 'HOUSE', categoryId: 2 }, { name: 'LAND', categoryId: 2 }]);
+  private getRealStateSymbols$(): Observable<CategorySymbolVO[]> {
+    return of([{ symbol: 'FLAT', categoryId: 2 }, { symbol: 'HOUSE', categoryId: 2 }, { symbol: 'LAND', categoryId: 2 }]);
   }
 
-  private getCommoditySymbols$(): Observable<Symbol[]> {
+  private getCommoditySymbols$(): Observable<CategorySymbolVO[]> {
     return this.commoditiesRepository
       .getAll$()
       .pipe(
         map((commodities) =>
           commodities.map((c) => ({
-            name: c.symbol,
+            symbol: c.symbol,
             categoryId: 3,
           }))
         )
       );
   }
 
-  private getStockSymbols$(): Observable<Symbol[]> {
+  private getStockSymbols$(): Observable<CategorySymbolVO[]> {
     return this.stocksRepository
       .getCompanies$()
       .pipe(
         map((companies) =>
-          companies.map((c) => ({ name: c.symbol, categoryId: 4 }))
+          companies.map((c) => ({ symbol: c.symbol, categoryId: 4 }))
         )
       );
   }
 
-  private getCashSymbols$(): Observable<Symbol[]> {
+  private getCashSymbols$(): Observable<CategorySymbolVO[]> {
     return this.currenciesRepository.getAll$().pipe(
       map((currencies) =>
         currencies
           .filter((c) => c.type === CurrencyType.FIAT)
-          .map((c) => ({ name: c.symbol, categoryId: 6 }))
+          .map((c) => ({ symbol: c.symbol, categoryId: 6 }))
       )
     );
   }
 
-  public getSymbols$(): Observable<Symbol[]> {
+  public getSymbols$(): Observable<CategorySymbolVO[]> {
     return forkJoin([
       this.getCryptoSymbols$(),
       this.getRealStateSymbols$(),
@@ -75,7 +75,7 @@ export class SymbolsRepositoryService {
     );
   }
 
-  public getSymbolsByCategory$(categoryId: number): Observable<Symbol[]> {
+  public getSymbolsByCategory$(categoryId: number): Observable<CategorySymbolVO[]> {
     return this.getSymbols$().pipe(
       map((symbols) => symbols.filter((s) => s.categoryId === categoryId))
     );

@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, map, of } from 'rxjs';
 import { Asset, NULL_ASSET } from 'src/app/domain/asset.type';
+import { CategorySymbolVO } from 'src/app/domain/category-symbol-vo.type';
 import { Category } from 'src/app/domain/category.type';
-import { Symbol } from 'src/app/domain/symbol.type';
-import { AssetsStoreService } from 'src/app/shared/store/assets-store.service';
+import { AssetsStoreService } from 'src/app/shared/assets/assets-store.service';
 
 @Component({
   selector: 'lab-new-asset-form',
@@ -13,10 +13,10 @@ import { AssetsStoreService } from 'src/app/shared/store/assets-store.service';
 })
 export class NewAssetFormComponent implements OnInit {
   @Input() public categories: Category[] = [];
-  @Input() public symbols: Symbol[] = [];
+  @Input() public symbols: CategorySymbolVO[] = [];
   @Output() public save: EventEmitter<Asset> = new EventEmitter();
 
-  protected categorySymbols: Symbol[] = [];
+  protected categorySymbols: CategorySymbolVO[] = [];
   protected existingAsset: Asset | null = null;
   protected isRealEstate = false;
 
@@ -60,9 +60,9 @@ export class NewAssetFormComponent implements OnInit {
     this.form.get('symbol')?.valueChanges.subscribe(symbol => {
       if (!this.isRealEstate && symbol) {
         // For non-real estate, look up symbol info and populate fields
-        const symbolObj = this.categorySymbols.find(s => s.name === symbol);
+        const symbolObj = this.categorySymbols.find(s => s.symbol === symbol);
         if (symbolObj) {
-          this.form.get('name')?.setValue(symbolObj.name);
+          this.form.get('name')?.setValue(symbolObj.symbol);
           // Value would typically come from an API, using placeholder value for now
           this.form.get('value')?.setValue(1);
         }
