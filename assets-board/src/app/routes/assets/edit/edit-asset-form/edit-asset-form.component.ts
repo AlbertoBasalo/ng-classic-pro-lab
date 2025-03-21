@@ -26,27 +26,21 @@ export class EditAssetFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.asset) {
-      this.form.patchValue({
-        quantity: this.asset.quantity
-      });
-      
-      // Load asset details
-      this.assetDetails$ = this.assetDetailsService.getAssetDetails$(
-        this.asset.categoryId,
-        this.asset.symbol
-      );
-    }
+    if(!this.asset) return; 
+    this.form.patchValue({quantity: this.asset.quantity}); 
+    // Load asset details
+    this.assetDetails$ = this.assetDetailsService.getAssetDetails$(
+      this.asset.categoryId,
+      this.asset.symbol
+    );
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      const updatedAsset: Asset = {
-        ...this.asset,
-        quantity: this.form.value.quantity
-      };
-      this.update.emit(updatedAsset);
-    }
+    const updatedAsset: Asset = {
+      ...this.asset,
+      quantity: this.form.value.quantity
+    };
+    this.update.emit(updatedAsset);
   }
 
   onDelete() {

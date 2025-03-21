@@ -5,7 +5,7 @@
   <p><strong>Value:</strong> {{ asset.value | currency }}</p>
   
   <details *ngIf="assetDetails$ | async as details">
-    <summary><strong>Detailed Information</strong></summary>
+    <summary><strong>Click for detailed information</strong></summary>
     <pre>{{ details | json }}</pre>
   </details>
 </div>
