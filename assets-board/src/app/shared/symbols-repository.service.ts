@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, map, of } from 'rxjs';
+import { Observable, forkJoin, map, of, tap } from 'rxjs';
 import { CategorySymbolVO } from '../domain/category-symbol-vo.type';
 import { CurrencyType } from '../domain/currency.type';
 import { CommoditiesRepositoryService } from './commodities-repository.service';
@@ -28,6 +28,10 @@ export class SymbolsRepositoryService {
 
   private getRealStateSymbols$(): Observable<CategorySymbolVO[]> {
     return of([{ symbol: 'FLAT', categoryId: 2 }, { symbol: 'HOUSE', categoryId: 2 }, { symbol: 'LAND', categoryId: 2 }]);
+  }
+
+  private getBondsSymbols$(): Observable<CategorySymbolVO[]> {
+    return of([{ symbol: 'USTBILL', categoryId: 5 }, { symbol: 'ETF', categoryId: 5 }]);
   }
 
   private getCommoditySymbols$(): Observable<CategorySymbolVO[]> {
@@ -69,9 +73,11 @@ export class SymbolsRepositoryService {
       this.getRealStateSymbols$(),
       this.getCommoditySymbols$(),
       this.getStockSymbols$(),
+      this.getBondsSymbols$(),
       this.getCashSymbols$(),
     ]).pipe(
       map((symbolArrays) => symbolArrays.flat()),
+      tap((symbols) => console.log(symbols))
     );
   }
 
