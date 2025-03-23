@@ -1,11 +1,9 @@
-
-<article *ngIf="asset$ | async as asset">
-  <header>
-    <h2>Edit Asset: {{ (asset$ | async)?.name }}</h2>
-  </header>
+<ng-container *ngIf="asset$ | async as asset"> 
+  <app-page title="Edit Asset" [subtitle]="asset.name">
   <lab-edit-asset-form 
     [asset]="asset"
     (update)="updateAsset($event)"
-    (delete)="deleteAsset()"
-  ></lab-edit-asset-form>
-</article> 
+      (delete)="deleteAsset()"
+    ></lab-edit-asset-form>
+  </app-page>
+</ng-container>

@@ -8,15 +8,16 @@
 
 
 ## Store
-- [ ] Improve with Actions and reducers...
+- [x] Improve with Actions and reducers...
 
+## UI
+- [x] Page component
+- [ ] Details component
+  
 ## RxJs
 - [ ] Symbol searcher (RxJs, debounce, distinctUntilChanged...) + SwitchMap
 
 
-## UI
-- [ ] Page component
-- [ ] Details component
 
 
 
