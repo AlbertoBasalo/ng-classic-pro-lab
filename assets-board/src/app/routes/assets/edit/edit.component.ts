@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { concatMap, map, Observable, of, tap } from 'rxjs';
 import { Asset, NULL_ASSET } from 'src/app/domain/asset.type';
 import { EditAssetService } from './edit-asset.service';
 
@@ -23,9 +23,11 @@ export class EditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.symbol = this.route.snapshot.paramMap.get('symbol') || '';
-    this.asset$ = this.editAsset.loadAsset$(this.symbol);
-    // To Do get specific asset from the appropriate repository
+    this.asset$ = this.route.paramMap.pipe(
+      map((params) => params.get('symbol') || ''),
+      tap((symbol) => (this.symbol = symbol)),
+      concatMap((symbol) => this.editAsset.loadAsset$(symbol))
+    );
   }
 
   updateAsset(asset: Asset): void {

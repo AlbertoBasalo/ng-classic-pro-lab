@@ -79,8 +79,7 @@ export class NewAssetFormComponent implements OnInit {
     const symbolObj = this.categorySymbols.find(s => s.symbol === symbol);
     if(!symbolObj) return;
     this.getControl('name').setValue(symbolObj.symbol);
-    // Value would typically come from an API, using placeholder value for now
-    this.getControl('value').setValue(1);
+    this.getControl('value').setValue(symbolObj.value);
   }
 
   protected onSubmit() {

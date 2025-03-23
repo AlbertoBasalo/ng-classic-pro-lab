@@ -220,6 +220,13 @@ export class StocksRepositoryService {
   }
 
   /**
+   * Get all available quotes
+   */
+  public getQuotes$(): Observable<Quote[]> {
+    return of(Object.values(this.quotes));
+  }
+
+  /**
    * Get a specific quote by symbol with its value at a given timestamp
    */
   public getQuote$(symbol: string): Observable<Quote | undefined> {
