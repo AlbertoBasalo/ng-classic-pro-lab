@@ -47,22 +47,23 @@ export class AssetsStoreService {
     );
   }
   public reduceSetAssets(assets: Asset[]): void {
-    this.assets.next(assets);
+    const newState = [ ...assets];
+    this.assets.next(newState);
   }
   public reduceAddAsset(newAsset: Asset): void {
-    this.assets.next([...this.assets.value, newAsset]);
+    const state = this.assets.value;
+    const newState = [...state, newAsset];
+    this.assets.next(newState);
   }
   public reduceUpdateAsset(updatedAsset: Asset): void {
-    this.assets.next(
-      this.assets.value.map((asset) =>
-        asset.symbol === updatedAsset.symbol ? updatedAsset : asset
-      )
-    );
+    const state = this.assets.value;
+    const newState = state.map((a) => a.symbol === updatedAsset.symbol ? updatedAsset : a);
+    this.assets.next(newState);
   }
   public reduceDeleteAsset(symbol: string): void {
-    this.assets.next(
-      this.assets.value.filter((asset) => asset.symbol !== symbol)
-    );
+    const state = this.assets.value;
+    const newState = state.filter((asset) => asset.symbol !== symbol);
+    this.assets.next(newState);
   }
 
   public dispatch(action: Action) {

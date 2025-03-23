@@ -133,8 +133,11 @@ export class AssetsRepositoryService {
   }
 
   public put$(asset: Asset): Observable<Asset> {
-    this.fakeData.push(asset);
-    localStorage.setItem('assets', JSON.stringify(this.fakeData));
+    const assetIndex = this.fakeData.findIndex((a) => a.symbol === asset.symbol); 
+    if (assetIndex !== -1) {
+      this.fakeData[assetIndex] = asset;
+      localStorage.setItem('assets', JSON.stringify(this.fakeData));
+    }
     return of(asset);
   }
 
