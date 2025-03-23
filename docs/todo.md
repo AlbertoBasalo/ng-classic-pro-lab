@@ -1,20 +1,22 @@
-Form Validators
+## Form Validators
 
-evenValidator
-maxInvestmentValidator
-uniqueSymbolValidator
-
-
-RxJs
-Symbol searcher (RxJs, debounce, distinctUntilChanged...) + SwitchMap
+- [x] evenValidator
+- [x] maxInvestmentValidator
+- [x] symbolValidator
 
 
-Store
-Improve with Actions and reducers...
 
-UI
-Page component
-Details component
+
+## Store
+- [ ] Improve with Actions and reducers...
+
+## RxJs
+- [ ] Symbol searcher (RxJs, debounce, distinctUntilChanged...) + SwitchMap
+
+
+## UI
+- [ ] Page component
+- [ ] Details component
 
 
 

@@ -32,11 +32,11 @@ export class EditAssetService {
   }
 
   updateAsset(asset: Asset): void {
-    this.assetsStore.dispatchUpdateAsset(asset);
+    this.assetsStore.dispatch({ type: 'UPDATE_ASSET', payload: asset });
   }
   
   deleteAsset(symbol: string): void {
-    this.assetsStore.dispatchDeleteAsset(symbol);
+    this.assetsStore.dispatch({ type: 'DELETE_ASSET', payload: symbol });
     this.router.navigate(['/']);
   }
 } 

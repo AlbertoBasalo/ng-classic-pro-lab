@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 
-import { catchError, delay, forkJoin, map, Observable, of, switchMap, take } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  delay,
+  forkJoin,
+  map,
+  Observable,
+  of,
+} from 'rxjs';
 import { Asset, NULL_ASSET } from '../../domain/asset.type';
 import { AssetValueService } from './asset-value.service';
 
@@ -8,8 +16,7 @@ import { AssetValueService } from './asset-value.service';
   providedIn: 'root',
 })
 export class AssetsRepositoryService {
-
-    private fakeData = [
+  private fakeData = [
     {
       id: 1,
       name: 'Bitcoin',
@@ -60,33 +67,32 @@ export class AssetsRepositoryService {
     },
   ];
 
-
-  constructor(
-    private assetValueService: AssetValueService
-  ) {
+  constructor(private assetValueService: AssetValueService) {
     const localData = localStorage.getItem('assets');
     if (localData) {
       const parsedData = JSON.parse(localData);
-      if(parsedData.length > 0) {
+      if (parsedData.length > 0) {
         this.fakeData = parsedData;
       }
     }
   }
 
   public getAll$(): Observable<Asset[]> {
+    console.log('getAll$');
     return of(this.fakeData).pipe(
-      take(1), // To avoid infinite loop caused by the dispatching of changes in the store
-      switchMap((assets: Asset[]) => {      
+      concatMap((assets: Asset[]) => {
         // Create an Observable updater for each asset to get its updated value
         // ! Pay attention to the type of the assetUpdaters$ is an array of Observables
-        const assetUpdaters$: Observable<Asset>[] = assets.map(asset => this.getUpdatedAssetValue$(asset));
-        
+        const assetUpdaters$: Observable<Asset>[] = assets.map((asset) =>
+          this.getUpdatedAssetValue$(asset)
+        );
+
         // Combine all asset updaters Observables
         // ! Pay attention to the type of the updatedAssets is an Observable of an array of Assets
         const updatedAssets$: Observable<Asset[]> = forkJoin(assetUpdaters$);
         return updatedAssets$;
       }),
-      delay(500), // Simulate network delay
+      delay(500) // Simulate network delay
     );
   }
 
@@ -96,24 +102,26 @@ export class AssetsRepositoryService {
    * @returns Observable with the updated asset
    */
   private getUpdatedAssetValue$(asset: Asset): Observable<Asset> {
-    return this.assetValueService.getCurrentValue$(asset.categoryId, asset.symbol).pipe(
-      // Combine the current value with the asset
-      map(currentValue => ({
-        ...asset,
-        value: currentValue * (1 + Math.random() * 0.1)
-      })),
-      // If there's an error getting the value, keep the original
-      catchError(() => of(asset))
-    );
+    return this.assetValueService
+      .getCurrentValue$(asset.categoryId, asset.symbol)
+      .pipe(
+        // Combine the current value with the asset
+        map((currentValue) => ({
+          ...asset,
+          value: currentValue * (1 + Math.random() * 0.1),
+        })),
+        // If there's an error getting the value, keep the original
+        catchError(() => of(asset))
+      );
   }
 
   public getById$(id: number): Observable<Asset> {
-    const asset= this.fakeData.find(asset => asset.id === id);
+    const asset = this.fakeData.find((asset) => asset.id === id);
     return of(asset || NULL_ASSET);
   }
 
   public getBySymbol$(symbol: string): Observable<Asset> {
-    const asset= this.fakeData.find(asset => asset.symbol === symbol);
+    const asset = this.fakeData.find((asset) => asset.symbol === symbol);
     return of(asset || NULL_ASSET);
   }
 
@@ -131,9 +139,8 @@ export class AssetsRepositoryService {
   }
 
   public delete$(symbol: string): Observable<string> {
-    this.fakeData = this.fakeData.filter(asset => asset.symbol !== symbol);
+    this.fakeData = this.fakeData.filter((asset) => asset.symbol !== symbol);
     localStorage.setItem('assets', JSON.stringify(this.fakeData));
     return of(symbol);
   }
-  
 }

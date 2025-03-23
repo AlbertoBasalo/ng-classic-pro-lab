@@ -10,7 +10,8 @@ export class HomeService {
     private assetsStore: AssetsStoreService,
     private categoriesRepository: CategoriesRepositoryService
   ) {
-    this.assetsStore.dispatchSetAssets();
+    console.log('HomeService constructor');
+    this.assetsStore.dispatch({ type: 'LOAD_ASSETS', payload: null });
   }
 
   getAssets$() {

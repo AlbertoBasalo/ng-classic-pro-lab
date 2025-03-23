@@ -36,7 +36,7 @@ export class NewAssetService {
   * @param asset The asset to save
   */
   saveAsset(asset: Asset):void {
-    this.assetsStore.dispatchAddAsset(asset);
+    this.assetsStore.dispatch({ type: 'ADD_ASSET', payload: asset });
   }
 }
 

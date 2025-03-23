@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { Asset, NULL_ASSET } from '../../domain/asset.type';
-import { AssetsRepositoryService } from './assets-repository.service';
+import { Action } from './assets-actions.type';
 
 @Injectable({
   providedIn: 'root',
@@ -9,19 +9,24 @@ import { AssetsRepositoryService } from './assets-repository.service';
 export class AssetsStoreService {
   private assets = new BehaviorSubject<Asset[]>([]);
 
-  public assets$ = this.assets.asObservable();
+  // ToDo:
+  // - emit {action, state}
+  private actions = new Subject<Action>();
 
-  constructor(private assetsRepositoryService: AssetsRepositoryService) {
-    this.dispatchSetAssets();
+  constructor() {
+    this.dispatch({ type: 'LOAD_ASSETS', payload: null });
   }
 
-  public selectAssets$(): Observable<Asset[]> {
-    return this.assets.asObservable();
+  public selectActions$(): Observable<Action> {
+    return this.actions.asObservable();
   }
 
   public selectAssetBySymbol$(symbol: string): Observable<Asset> {
     return this.assets.pipe(
-      map((assets) => assets.find((asset) => asset.symbol === symbol) || NULL_ASSET)
+      map(
+        (assets) =>
+          assets.find((asset) => asset.symbol === symbol) || NULL_ASSET
+      )
     );
   }
 
@@ -31,6 +36,9 @@ export class AssetsStoreService {
     );
   }
 
+  public selectAssets$(): Observable<Asset[]> {
+    return this.assets.asObservable();
+  }
   public selectTotalAmount$(): Observable<number> {
     return this.assets.pipe(
       map((assets) =>
@@ -38,40 +46,32 @@ export class AssetsStoreService {
       )
     );
   }
-
-  // ToDo: manage subscriptions from the repository service
-
-  public dispatchSetAssets(): void {
-    this.assetsRepositoryService.getAll$().subscribe((assets) => {  
-      this.assets.next(assets);
-    });
+  public reduceSetAssets(assets: Asset[]): void {
+    this.assets.next(assets);
+  }
+  public reduceAddAsset(newAsset: Asset): void {
+    this.assets.next([...this.assets.value, newAsset]);
+  }
+  public reduceUpdateAsset(updatedAsset: Asset): void {
+    this.assets.next(
+      this.assets.value.map((asset) =>
+        asset.symbol === updatedAsset.symbol ? updatedAsset : asset
+      )
+    );
+  }
+  public reduceDeleteAsset(symbol: string): void {
+    this.assets.next(
+      this.assets.value.filter((asset) => asset.symbol !== symbol)
+    );
   }
 
-  public dispatchAddAsset(asset: Asset): void {
-    this.assetsRepositoryService.post$(asset).subscribe((asset) => {
-      this.assets.next([...this.assets.value, asset]);
-    });
-  }
-
-  public dispatchUpdateAsset(asset: Asset): void {
-    this.assetsRepositoryService.put$(asset).subscribe((asset) => {
-      const assets = this.assets.value;
-      const index = assets.findIndex((a) => a.id === asset.id);
-      if (index !== -1) {
-        assets[index] = asset;
-        this.assets.next([...assets]);
-      }
-    });
-  }
-
-  public dispatchDeleteAsset(symbol: string): void {
-    this.assetsRepositoryService.delete$(symbol).subscribe((symbol) => {
-      const assets = this.assets.value;
-      const index = assets.findIndex((a) => a.symbol === symbol);
-      if (index !== -1) {
-        assets.splice(index, 1);
-        this.assets.next([...assets]);
-      }
-    });
+  public dispatch(action: Action) {
+      // ToDo: 
+      // - emit Action with state
+      // - Wait for the action to be processed
+      // - remove reducers and use effects instead
+    this.actions.next(action);
   }
 }
+
+
