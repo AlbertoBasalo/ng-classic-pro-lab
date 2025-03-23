@@ -12,6 +12,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./routes/assets/assets.module').then((m) => m.AssetsModule),
   },
+  { 
+    path: 'symbols', 
+    loadChildren: () => import('./routes/symbols/symbols.module').then(m => m.SymbolsModule) 
+  },
 ];
 
 @NgModule({

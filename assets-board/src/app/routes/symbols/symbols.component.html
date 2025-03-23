@@ -1,0 +1,6 @@
+<lab-search (search)="onSearch($event)"></lab-search>
+<ul>
+  <li *ngFor="let symbol of symbols$ | async">  
+     {{symbol.symbol}} - {{symbol.categoryName}}
+  </li>
+</ul>

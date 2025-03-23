@@ -15,7 +15,8 @@
 - [x] Details component
   
 ## RxJs
-- [ ] Symbol searcher (RxJs, debounce, distinctUntilChanged...) + SwitchMap
+- [x] Symbol searcher (RxJs, debounce, distinctUntilChanged...)  
+- [ ] SwitchMap
 
 
 
