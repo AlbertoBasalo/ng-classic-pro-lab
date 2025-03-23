@@ -45,7 +45,11 @@
         id="quantity"
         placeholder="Enter quantity"
         [attr.aria-invalid]="isInvalid('quantity')"
+        [attr.aria-describedby]="getErrors('quantity')?.['even'] ? 'even-error' : null"
       />
+      <div *ngIf="getErrors('quantity')?.['even']" id="even-error">
+        Quantity must be an even number
+      </div>
     </div>
     <div>
       <label for="value">Value</label>
@@ -58,7 +62,11 @@
         [attr.aria-invalid]="isInvalid('value')"
       />
     </div>
+    <div *ngIf="getErrors()?.['maxInvestment']" >
+      Investment cannot exceed 1.000.000$
+    </div>
     <button type="submit" [disabled]="form.invalid">Submit</button>
   </fieldset>
 </form>
+
 
