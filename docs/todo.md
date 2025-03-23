@@ -12,7 +12,7 @@
 
 ## UI
 - [x] Page component
-- [ ] Details component
+- [x] Details component
   
 ## RxJs
 - [ ] Symbol searcher (RxJs, debounce, distinctUntilChanged...) + SwitchMap

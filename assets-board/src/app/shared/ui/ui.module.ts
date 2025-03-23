@@ -1,11 +1,12 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { PageComponent } from "./page.component";
+import { DetailsComponent } from "./details/details.component";
+import { PageComponent } from "./page/page.component";
 
 @NgModule({
-  declarations: [PageComponent],
+  declarations: [PageComponent, DetailsComponent],
   imports: [CommonModule],
-  exports: [PageComponent],
+  exports: [PageComponent, DetailsComponent],
 })
 export class UiModule {}
 
