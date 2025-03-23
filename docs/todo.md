@@ -4,9 +4,6 @@
 - [x] maxInvestmentValidator
 - [x] symbolValidator
 
-
-
-
 ## Store
 - [x] Improve with Actions and reducers...
 
@@ -16,7 +13,7 @@
   
 ## RxJs
 - [x] Symbol searcher (RxJs, debounce, distinctUntilChanged...)  
-- [ ] SwitchMap
+- [x] SwitchMap
 
 
 
