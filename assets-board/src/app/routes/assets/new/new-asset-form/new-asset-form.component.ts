@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Observable, map, of } from 'rxjs';
+import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { Asset, NULL_ASSET } from 'src/app/domain/asset.type';
 import { CategorySymbolVO } from 'src/app/domain/category-symbol-vo.type';
 import { Category } from 'src/app/domain/category.type';
+import { evenValidator, maxInvestmentValidator, symbolValidator } from 'src/app/shared/asset.vallidators';
 import { AssetsStoreService } from 'src/app/shared/assets/assets-store.service';
 
 
@@ -24,16 +24,18 @@ export class NewAssetFormComponent implements OnInit {
   protected existingAssetForSymbol: Asset | null = null;
   protected isRealEstate = false;
 
-  protected form: FormGroup = this.fb.group({
+  protected form = this.fb.group({
     categoryId: [0, [Validators.required, Validators.min(1)]],
     symbol: ['', {
       validators: [Validators.required],
-      asyncValidators: [this.symbolValidator()],
+      asyncValidators: [symbolValidator()],
       updateOn: 'change'
     }],
     name: ['', [Validators.required]],
-    quantity: [1, [Validators.required, Validators.min(0)]],
+    quantity: [1, [Validators.required, Validators.min(0), evenValidator]],
     value: [1, [Validators.required, Validators.min(0)]],
+  }, {
+    validators: [maxInvestmentValidator(1000000)]
   });
 
   constructor(
@@ -81,7 +83,7 @@ export class NewAssetFormComponent implements OnInit {
     this.getControl('value').setValue(1);
   }
 
-  private symbolValidator(): AsyncValidatorFn {
+ /*  private symbolValidator(): AsyncValidatorFn {
     // return a function that will be called when the symbol field is changed
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const result = of(null);
@@ -98,7 +100,7 @@ export class NewAssetFormComponent implements OnInit {
         })
       );
     };
-  }
+  } */
 
   protected onSubmit() {
     const formValue = this.form.value;
@@ -122,7 +124,8 @@ export class NewAssetFormComponent implements OnInit {
     return this.getControl(controlName).invalid;
   }
 
-  protected getErrors(controlName: string): ValidationErrors | null {
+  protected getErrors(controlName?: string): ValidationErrors | null {
+    if(!controlName) return this.form.errors;
     return this.getControl(controlName).errors;
   }
 
