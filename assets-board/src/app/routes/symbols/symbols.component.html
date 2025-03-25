@@ -1,6 +1,6 @@
-<lab-search (search)="onSearch($event)"></lab-search>
-<ul>
-  <li *ngFor="let symbol of symbols$ | async">  
-     {{symbol.symbol}} - {{symbol.categoryName}}
+<lab-search (search)="onSearch($event)" [initialTerm]="paramSearchTerm"></lab-search>
+<ul aria-label="Symbols list" *ngIf="symbols$ | async as symbols">
+  <li *ngFor="let symbol of symbols">  
+     {{symbol.categoryName}} {{symbol.symbol}} - {{symbol.value | currency}}
   </li>
 </ul>
