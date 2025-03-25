@@ -5,7 +5,7 @@
       <select 
         id="categoryId" formControlName="categoryId" [attr.aria-invalid]="isInvalid('categoryId')">
           <option value="0" disabled selected>Select a category</option>
-          <option *ngFor="let category of categories" [ngValue]="category.id">
+          <option *ngFor="let category of categories" [value]="category.id">
             {{ category.name }}
           </option>
       </select>

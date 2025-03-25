@@ -86,11 +86,12 @@ export class NewAssetFormComponent implements OnInit {
     const asset: Asset = {
       id:0,
       name: this.getValue('name'),
-      categoryId: this.getValue('categoryId'),
+      categoryId: Number(this.getValue('categoryId')),
       symbol: this.getValue('symbol'),
       quantity: this.getValue('quantity'),
       value: this.getValue('value')
     };
+    console.log("new asset", asset);
     this.save.emit(asset);
     this.form.reset(NULL_ASSET);
   }
