@@ -8,14 +8,12 @@ import { HomeComponent } from './home.component';
 
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-    AssetsListComponent
-  ],
-  imports: [
-    CommonModule,
-    HomeRoutingModule,
-    UiModule
-  ]
+    imports: [
+        CommonModule,
+        HomeRoutingModule,
+        UiModule,
+        HomeComponent,
+        AssetsListComponent
+    ]
 })
 export class HomeModule { }

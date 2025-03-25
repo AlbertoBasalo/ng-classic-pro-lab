@@ -7,12 +7,12 @@ import { EditRoutingModule } from './edit-routing.module';
 import { EditComponent } from './edit.component';
 
 @NgModule({
-  declarations: [EditComponent, EditAssetFormComponent],
-  imports: [
-    CommonModule,
-    EditRoutingModule,
-    ReactiveFormsModule,
-    UiModule
-  ],
+    imports: [
+        CommonModule,
+        EditRoutingModule,
+        ReactiveFormsModule,
+        UiModule,
+        EditComponent, EditAssetFormComponent
+    ],
 })
 export class EditModule {} 

@@ -7,13 +7,11 @@ import { SymbolsComponent } from './symbols.component';
 
 
 @NgModule({
-  declarations: [
-    SymbolsComponent
-  ],
-  imports: [
-    CommonModule,
-    SymbolsRoutingModule,
-    UiModule
-  ]
+    imports: [
+        CommonModule,
+        SymbolsRoutingModule,
+        UiModule,
+        SymbolsComponent
+    ]
 })
 export class SymbolsModule { }

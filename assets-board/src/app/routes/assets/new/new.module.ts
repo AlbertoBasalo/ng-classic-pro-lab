@@ -8,7 +8,6 @@ import { NewRoutingModule } from './new-routing.module';
 import { NewComponent } from './new.component';
 
 @NgModule({
-  declarations: [NewComponent, NewAssetFormComponent],
-  imports: [CommonModule, NewRoutingModule, ReactiveFormsModule, UiModule],
+    imports: [CommonModule, NewRoutingModule, ReactiveFormsModule, UiModule, NewComponent, NewAssetFormComponent],
 })
 export class NewModule {}

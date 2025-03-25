@@ -1,11 +1,20 @@
 import { Component, Input } from '@angular/core';
 import { Asset } from 'src/app/domain/asset.type';
 import { Category } from 'src/app/domain/category.type';
+import { RouterLink } from '@angular/router';
+import { NgFor, DecimalPipe, CurrencyPipe } from '@angular/common';
 
 @Component({
-  selector: 'lab-assets-list',
-  templateUrl: './assets-list.component.html',
-  styleUrls: ['./assets-list.component.css'],
+    selector: 'lab-assets-list',
+    templateUrl: './assets-list.component.html',
+    styleUrls: ['./assets-list.component.css'],
+    standalone: true,
+    imports: [
+        NgFor,
+        RouterLink,
+        DecimalPipe,
+        CurrencyPipe,
+    ],
 })
 export class AssetsListComponent {
   @Input() public assets: Asset[] = [];

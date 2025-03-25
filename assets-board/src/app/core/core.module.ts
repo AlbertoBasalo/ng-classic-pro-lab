@@ -7,9 +7,8 @@ import { HeaderComponent } from './layout/header/header.component';
 import { ThemeToggleComponent } from './layout/theme-toggle/theme-toggle.component';
 
 @NgModule({
-  declarations: [HeaderComponent, ThemeToggleComponent],
-  imports: [CommonModule, HttpClientModule, RouterModule],
-  exports: [HeaderComponent],
+    imports: [CommonModule, HttpClientModule, RouterModule, HeaderComponent, ThemeToggleComponent],
+    exports: [HeaderComponent],
 })
 export class CoreModule {
   constructor(assetsEffects: AssetsEffects) {

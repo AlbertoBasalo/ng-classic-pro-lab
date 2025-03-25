@@ -1,13 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { Asset } from 'src/app/domain/asset.type';
 import { AssetDetailsService } from 'src/app/shared/assets/asset-details.service';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { DetailsComponent } from '../../../../shared/ui/details/details.component';
 
 @Component({
-  selector: 'lab-edit-asset-form',
-  templateUrl: './edit-asset-form.component.html',
-  styleUrls: ['./edit-asset-form.component.css']
+    selector: 'lab-edit-asset-form',
+    templateUrl: './edit-asset-form.component.html',
+    styleUrls: ['./edit-asset-form.component.css'],
+    standalone: true,
+    imports: [DetailsComponent, ReactiveFormsModule, AsyncPipe, CurrencyPipe]
 })
 export class EditAssetFormComponent implements OnInit {
   @Input() public asset!: Asset;

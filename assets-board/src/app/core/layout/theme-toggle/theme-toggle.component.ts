@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'lab-theme-toggle',
-  templateUrl: './theme-toggle.component.html',
-  styleUrls: ['./theme-toggle.component.css'],
+    selector: 'lab-theme-toggle',
+    templateUrl: './theme-toggle.component.html',
+    styleUrls: ['./theme-toggle.component.css'],
+    standalone: true,
+    imports: [NgIf],
 })
 export class ThemeToggleComponent {
   protected theme = localStorage.getItem('theme') || 'light';

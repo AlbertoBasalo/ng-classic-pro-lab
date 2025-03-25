@@ -1,19 +1,28 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Asset, NULL_ASSET } from 'src/app/domain/asset.type';
 import { CategorySymbolVO } from 'src/app/domain/category-symbol-vo.type';
 import { Category } from 'src/app/domain/category.type';
 import { AssetValidators } from 'src/app/shared/asset.validators';
 import { AssetsStoreService } from 'src/app/shared/assets/assets-store.service';
+import { RouterLink } from '@angular/router';
+import { NgFor, NgIf } from '@angular/common';
 
 
 /**
  * Presentational component with a form to add a new asset
  */
 @Component({
-  selector: 'lab-new-asset-form',
-  templateUrl: './new-asset-form.component.html',
-  styleUrls: ['./new-asset-form.component.css'],
+    selector: 'lab-new-asset-form',
+    templateUrl: './new-asset-form.component.html',
+    styleUrls: ['./new-asset-form.component.css'],
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        NgFor,
+        NgIf,
+        RouterLink,
+    ],
 })
 export class NewAssetFormComponent implements OnInit {
   @Input() public categories: Category[] = [];
