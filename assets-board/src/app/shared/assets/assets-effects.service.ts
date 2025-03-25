@@ -10,10 +10,11 @@ export class AssetsEffects {
   constructor(
     private assetsStore: AssetsStoreService,
     private assetsRepository: AssetsRepositoryService
-  ) {}
+  ) {
+  }
 
   configForRoot() {
-      this.assetsStore.selectActions$().subscribe((action) => {
+    this.assetsStore.selectActions$().subscribe((action) => {
       switch (action.type) {
         case 'LOAD_ASSETS':
           this.assetsRepository.getAll$()
