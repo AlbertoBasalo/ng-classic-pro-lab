@@ -11,8 +11,7 @@ import { HomeService } from './home.service';
 })
 export class HomeComponent {
   protected assets$: Observable<Asset[]> = this.homeService.getAssets$();
-  protected categories$: Observable<Category[]> =
-    this.homeService.getCategories$();
+  protected categories$: Observable<Category[]> = this.homeService.getCategories$();
 
   constructor(private homeService: HomeService) {}
 }

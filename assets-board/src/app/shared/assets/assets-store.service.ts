@@ -21,23 +21,19 @@ export class AssetsStoreService {
     return this.actions.asObservable();
   }
 
-  public selectAssetBySymbol$(symbol: string): Observable<Asset> {
-    return this.assets.pipe(
-      map(
-        (assets) =>
-          assets.find((asset) => asset.symbol === symbol) || NULL_ASSET
-      )
-    );
+  public selectAssets$(): Observable<Asset[]> {
+    return this.assets.asObservable();
   }
 
+  public selectAssetBySymbol$(symbol: string): Observable<Asset> {
+    return this.assets.pipe(
+      map((assets) => assets.find((asset) => asset.symbol === symbol) || NULL_ASSET)
+    );
+  }
   public selectAssetById$(id: number): Observable<Asset> {
     return this.assets.pipe(
       map((assets) => assets.find((asset) => asset.id === id) || NULL_ASSET)
     );
-  }
-
-  public selectAssets$(): Observable<Asset[]> {
-    return this.assets.asObservable();
   }
   public selectTotalAmount$(): Observable<number> {
     return this.assets.pipe(
@@ -46,6 +42,10 @@ export class AssetsStoreService {
       )
     );
   }
+  
+  // ToDo:
+  // - use functional reducers instead
+  
   public reduceSetAssets(assets: Asset[]): void {
     const newState = [ ...assets];
     this.assets.next(newState);
