@@ -1,4 +1,6 @@
-<details *ngIf="details">
-  <summary><strong>Click for detailed information</strong></summary>
-  <pre>{{ details | json }}</pre>
-</details>
+@if (details) {
+  <details>
+    <summary><strong>Click for detailed information</strong></summary>
+    <pre>{{ details | json }}</pre>
+  </details>
+}

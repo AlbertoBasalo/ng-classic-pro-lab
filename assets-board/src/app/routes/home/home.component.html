@@ -1,11 +1,11 @@
 <app-page title="Assets Board" subtitle="This is your portfolio">
-  <ng-container *ngIf="assets$ | async as assets">
-    <ng-container *ngIf="categories$ | async as categories">
+  @if (assets$ | async; as assets) {
+    @if (categories$ | async; as categories) {
       <lab-assets-list [assets]="assets" [categories]="categories">
       </lab-assets-list>
-    </ng-container>
-  </ng-container>
-  <footer>  
+    }
+  }
+  <footer>
     <nav>
       <p>Add a <a routerLink="/assets/new">new asset</a></p>
     </nav>

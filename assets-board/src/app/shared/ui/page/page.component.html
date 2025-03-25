@@ -1,7 +1,9 @@
 <article>
-  <header> 
+  <header>
     <h2>{{ title }}</h2>
-    <p *ngIf="subtitle">{{ subtitle }}</p>
+    @if (subtitle) {
+      <p>{{ subtitle }}</p>
+    }
   </header>
   <main>
     <ng-content></ng-content>

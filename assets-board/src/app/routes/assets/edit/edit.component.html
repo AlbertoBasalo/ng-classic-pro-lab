@@ -1,9 +1,9 @@
-<ng-container *ngIf="asset$ | async as asset"> 
+@if (asset$ | async; as asset) {
   <app-page title="Edit Asset" [subtitle]="asset.name">
-  <lab-edit-asset-form 
-    [asset]="asset"
-    (update)="updateAsset($event)"
+    <lab-edit-asset-form
+      [asset]="asset"
+      (update)="updateAsset($event)"
       (delete)="deleteAsset()"
     ></lab-edit-asset-form>
   </app-page>
-</ng-container>
+}

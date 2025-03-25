@@ -6,7 +6,7 @@ import { Category } from 'src/app/domain/category.type';
 import { AssetValidators } from 'src/app/shared/asset.validators';
 import { AssetsStoreService } from 'src/app/shared/assets/assets-store.service';
 import { RouterLink } from '@angular/router';
-import { NgFor, NgIf } from '@angular/common';
+
 
 
 /**
@@ -18,11 +18,9 @@ import { NgFor, NgIf } from '@angular/common';
     styleUrls: ['./new-asset-form.component.css'],
     standalone: true,
     imports: [
-        ReactiveFormsModule,
-        NgFor,
-        NgIf,
-        RouterLink,
-    ],
+    ReactiveFormsModule,
+    RouterLink
+],
 })
 export class NewAssetFormComponent implements OnInit {
   @Input() public categories: Category[] = [];

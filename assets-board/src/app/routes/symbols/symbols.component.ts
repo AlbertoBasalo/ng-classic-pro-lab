@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, distinctUntilChanged, filter, map, Observable, switchMap, tap } from 'rxjs';
 import { CategorySymbolVO } from 'src/app/domain/category-symbol-vo.type';
 import { SymbolsRepositoryService } from 'src/app/shared/symbols-repository.service';
-import { NgIf, NgFor, AsyncPipe, CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { SearchComponent } from '../../shared/ui/search/search.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { SearchComponent } from '../../shared/ui/search/search.component';
     styleUrls: ['./symbols.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [SearchComponent, NgIf, NgFor, AsyncPipe, CurrencyPipe]
+    imports: [SearchComponent, AsyncPipe, CurrencyPipe]
 })
 export class SymbolsComponent implements OnInit {
   private searchTerm$ = new BehaviorSubject<string>('');

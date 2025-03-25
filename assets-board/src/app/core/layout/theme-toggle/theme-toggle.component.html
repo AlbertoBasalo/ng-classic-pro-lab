@@ -1,6 +1,10 @@
 <a aria-label="Toggle theme">
   <span (click)="toggleTheme()">
-    <ng-container *ngIf="theme == 'light'">🔳</ng-container>
-    <ng-container *ngIf="theme == 'dark'">🔲</ng-container>
+    @if (theme == 'light') {
+      🔳
+    }
+    @if (theme == 'dark') {
+      🔲
+    }
   </span>
 </a>

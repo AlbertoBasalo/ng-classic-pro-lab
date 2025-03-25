@@ -5,7 +5,7 @@ import { Asset, NULL_ASSET } from 'src/app/domain/asset.type';
 import { EditAssetService } from './edit-asset.service';
 import { EditAssetFormComponent } from './edit-asset-form/edit-asset-form.component';
 import { PageComponent } from '../../../shared/ui/page/page.component';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 
 @Component({
@@ -15,11 +15,10 @@ import { NgIf, AsyncPipe } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        NgIf,
-        PageComponent,
-        EditAssetFormComponent,
-        AsyncPipe,
-    ],
+    PageComponent,
+    EditAssetFormComponent,
+    AsyncPipe
+],
 })
 export class EditComponent implements OnInit {
   protected asset$: Observable<Asset> = of(NULL_ASSET);

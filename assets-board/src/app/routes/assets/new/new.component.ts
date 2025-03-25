@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Asset } from 'src/app/domain/asset.type';
 import { NewAssetService } from './new-asset.service';
 import { NewAssetFormComponent } from './new-asset-form/new-asset-form.component';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { PageComponent } from '../../../shared/ui/page/page.component';
 
 
@@ -16,11 +16,10 @@ import { PageComponent } from '../../../shared/ui/page/page.component';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        PageComponent,
-        NgIf,
-        NewAssetFormComponent,
-        AsyncPipe,
-    ],
+    PageComponent,
+    NewAssetFormComponent,
+    AsyncPipe
+],
 })
 export class NewComponent {
   protected categories$ = this.newAsset.loadCategories$();

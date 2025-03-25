@@ -9,22 +9,24 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let asset of assets">
-      <td>
-        <a [routerLink]="['assets', 'edit', asset.symbol]">{{ asset.name }}</a>
-      </td>
-      <td>{{ categoryName(asset) }}</td>
-      <td style="text-align: right">
-        {{ asset.quantity | number : "1.2-2" }}
-      </td>
-      <td style="text-align: right">
-        {{ asset.value | currency : "USD" : "symbol" : "1.2-2" }}
-      </td>
-      <td style="text-align: right">
-        {{
-        asset.quantity * asset.value | currency : "USD" : "symbol" : "1.0-0"
-        }}
-      </td>
-    </tr>
+    @for (asset of assets; track asset) {
+      <tr>
+        <td>
+          <a [routerLink]="['assets', 'edit', asset.symbol]">{{ asset.name }}</a>
+        </td>
+        <td>{{ categoryName(asset) }}</td>
+        <td style="text-align: right">
+          {{ asset.quantity | number : "1.2-2" }}
+        </td>
+        <td style="text-align: right">
+          {{ asset.value | currency : "USD" : "symbol" : "1.2-2" }}
+        </td>
+        <td style="text-align: right">
+          {{
+          asset.quantity * asset.value | currency : "USD" : "symbol" : "1.0-0"
+          }}
+        </td>
+      </tr>
+    }
   </tbody>
 </table>

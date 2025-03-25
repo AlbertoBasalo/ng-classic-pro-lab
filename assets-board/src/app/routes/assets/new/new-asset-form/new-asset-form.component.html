@@ -2,28 +2,34 @@
   <fieldset>
     <div>
       <label for="categoryId">Category</label>
-      <select 
+      <select
         id="categoryId" formControlName="categoryId" [attr.aria-invalid]="isInvalid('categoryId')">
-          <option value="0" disabled selected>Select a category</option>
-          <option *ngFor="let category of categories" [value]="category.id">
+        <option value="0" disabled selected>Select a category</option>
+        @for (category of categories; track category) {
+          <option [value]="category.id">
             {{ category.name }}
           </option>
+        }
       </select>
     </div>
     <div>
       <label for="symbol">Symbol</label>
-      <select 
+      <select
         id="symbol" formControlName="symbol" [attr.aria-invalid]="isInvalid('symbol')">
-          <option value="" disabled selected>Select a symbol</option>
-          <option *ngFor="let categorySymbol of categorySymbols" [value]="categorySymbol.symbol">
+        <option value="" disabled selected>Select a symbol</option>
+        @for (categorySymbol of categorySymbols; track categorySymbol) {
+          <option [value]="categorySymbol.symbol">
             {{ categorySymbol.symbol }}
           </option>
+        }
       </select>
-      <div *ngIf="getErrors('symbol')?.['symbolExists']" >
-        This symbol is already in use. 
-        <a [routerLink]="['/assets', 'edit', existingAssetForSymbol?.symbol]">
-          You can edit the existing asset.</a> 
-      </div>
+      @if (getErrors('symbol')?.['symbolExists']) {
+        <div >
+          This symbol is already in use.
+          <a [routerLink]="['/assets', 'edit', existingAssetForSymbol?.symbol]">
+          You can edit the existing asset.</a>
+        </div>
+      }
     </div>
     <div>
       <label for="name">Name</label>
@@ -34,7 +40,7 @@
         placeholder="Enter name"
         [readonly]="!isRealEstate"
         [attr.aria-invalid]="isInvalid('name')"
-      />
+        />
     </div>
     <div>
       <label for="quantity">Quantity</label>
@@ -45,10 +51,12 @@
         placeholder="Enter quantity"
         [attr.aria-invalid]="isInvalid('quantity')"
         [attr.aria-describedby]="getErrors('quantity')?.['even'] ? 'even-error' : null"
-      />
-      <div *ngIf="getErrors('quantity')?.['even']" id="even-error">
-        Quantity must be an even number
-      </div>
+        />
+      @if (getErrors('quantity')?.['even']) {
+        <div id="even-error">
+          Quantity must be an even number
+        </div>
+      }
     </div>
     <div>
       <label for="value">Value</label>
@@ -59,11 +67,13 @@
         placeholder="Enter value"
         [readonly]="!isRealEstate"
         [attr.aria-invalid]="isInvalid('value')"
-      />
+        />
     </div>
-    <div *ngIf="getErrors()?.['maxInvestment']" >
-      Investment cannot exceed 1.000.000$
-    </div>
+    @if (getErrors()?.['maxInvestment']) {
+      <div >
+        Investment cannot exceed 1.000.000$
+      </div>
+    }
     <button type="submit" [disabled]="form.invalid">Submit</button>
   </fieldset>
 </form>
