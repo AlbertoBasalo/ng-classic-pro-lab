@@ -39,5 +39,4 @@ export class SymbolsComponent implements OnInit {
   onSearch(value: string) {
     this.searchTerm$.next(value);
   }
-
 }
