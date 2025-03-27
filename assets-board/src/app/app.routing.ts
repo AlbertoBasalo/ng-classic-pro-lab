@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { hasPowersGuard } from './core/has-powers.guard';
 
 export const APP_ROUTES: Routes = [
   {
@@ -17,6 +18,7 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'rates',
+    canActivate: [hasPowersGuard],
     loadChildren: () => import('./routes/rates/rates.routing')  
   },
 ];

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
 
 export type Rates = {
   [key: string]: number;
@@ -14,9 +14,9 @@ type OpenExResponse = {
   providedIn: 'root',
 })
 export class OpenExRatesRepository {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
   private url = `https://openexchangerates.org/api/latest.json`;
-  private appId = 'edcd832e8a2244fbae8183a125183e9d';
+  private appId = 'invalid-app-id';
   private params = new HttpParams()
     .set('app_id', this.appId)
     .set('show_alternative', 'true');
