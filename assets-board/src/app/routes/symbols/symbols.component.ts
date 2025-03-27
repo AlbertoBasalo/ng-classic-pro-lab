@@ -1,9 +1,9 @@
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, distinctUntilChanged, filter, map, Observable, switchMap, tap } from 'rxjs';
 import { CategorySymbolVO } from 'src/app/domain/category-symbol-vo.type';
 import { SymbolsRepositoryService } from 'src/app/shared/symbols-repository.service';
-import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { SearchComponent } from '../../shared/ui/search/search.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { SearchComponent } from '../../shared/ui/search/search.component';
     standalone: true,
     imports: [SearchComponent, AsyncPipe, CurrencyPipe]
 })
-export class SymbolsComponent implements OnInit {
+export default class SymbolsComponent implements OnInit {
   private searchTerm$ = new BehaviorSubject<string>('');
   
   protected symbols$: Observable<CategorySymbolVO[]> = this.searchTerm$.pipe(

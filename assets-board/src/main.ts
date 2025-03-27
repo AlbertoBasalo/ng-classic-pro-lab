@@ -1,7 +1,9 @@
-import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
-import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { AppRoutingModule } from './app/app-routing.module';
+import { provideHttpClient } from '@angular/common/http';
+import { APP_INITIALIZER } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 import { AppComponent } from './app/app.component';
+import { APP_ROUTES } from './app/app.routing';
 import { AssetsEffects } from './app/shared/assets/assets-effects.service';
 
 function initEffects(assetsEffects: AssetsEffects) {
@@ -10,7 +12,8 @@ function initEffects(assetsEffects: AssetsEffects) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-      importProvidersFrom(BrowserModule, AppRoutingModule),
+      provideRouter(APP_ROUTES),
+      provideHttpClient(),
       { 
         provide: APP_INITIALIZER, 
         useFactory: initEffects, 

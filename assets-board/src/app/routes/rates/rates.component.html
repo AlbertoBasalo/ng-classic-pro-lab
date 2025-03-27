@@ -1,0 +1,9 @@
+<app-page title="1 Dollar Rates" subtitle="Value 6 digits before and after the decimal point">
+  <ul>
+    @for (rate of rates | keyvalue; track rate.key) {
+      <li>
+        {{ rate.value | number : "6.6-6" }} {{ rate.key }}
+      </li>
+    }
+  </ul>
+</app-page> 
