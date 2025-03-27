@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RatesResolver } from './routes/rates/rates.resolver';
 
 const routes: Routes = [
   {
@@ -15,6 +16,11 @@ const routes: Routes = [
   { 
     path: 'symbols', 
     loadChildren: () => import('./routes/symbols/symbols.module').then(m => m.SymbolsModule) 
+  },
+  { 
+    path: 'rates', 
+    resolve: { rates: RatesResolver },
+    loadChildren: () => import('./routes/rates/rates.module').then(m => m.RatesModule) 
   },
 ];
 

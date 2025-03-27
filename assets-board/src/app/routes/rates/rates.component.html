@@ -1,0 +1,7 @@
+<app-page title="1 Dollar Rates" subtitle="Value 6 digits before and after the decimal point">
+  <ul>
+    <li *ngFor="let rate of rates | keyvalue">
+      {{ rate.value | number: '6.6-6' }} {{ rate.key }}
+    </li>
+  </ul>
+</app-page>

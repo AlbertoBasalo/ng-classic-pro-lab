@@ -21,6 +21,9 @@ export class CacheInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+
+    console.log('Intercepting request', request.url);
+
     // Only cache GET requests
     if (request.method !== 'GET') {
       return next.handle(request);
@@ -33,6 +36,7 @@ export class CacheInterceptor implements HttpInterceptor {
 
     const cachedResponse = this.getFromCache(request.url);
     if (cachedResponse) {
+      console.log('Cache hit for', request.url);
       return of(cachedResponse);
     }
 
@@ -72,5 +76,6 @@ export class CacheInterceptor implements HttpInterceptor {
     };
 
     this.cache.set(url, entry);
+    console.log('Cache set for', url);
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Currency, CurrencyCategory, CurrencyType } from '../domain/currency.type';
 
+
 @Injectable({
   providedIn: 'root',
 })
